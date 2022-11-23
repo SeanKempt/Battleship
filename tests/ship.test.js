@@ -1,9 +1,10 @@
-import { ship } from '../src/modules/ship.js';
+import { ship } from '../src/modules/ship';
+const testShip = ship(4);
 
-describe('test if ship is operational', () => {
-  const testShip = ship(4);
-  testShip.hit();
-  test('if hits is increased by 1 when called', () => {
-    expect(testShip.getHits()).toBe(1);
+describe('ship is operational', () => {
+  test('check if the ship is sunk after being hit', () => {
+    expect(testShip.isSunk()).toBe(false);
+    testShip.hit(5);
+    expect(testShip.isSunk()).toBe(true);
   });
 });

@@ -1,7 +1,5 @@
 const ship = (length, hits = 0, sunk = false) => {
-  const hit = () => {
-    hits++;
-  };
+  const hit = (value) => (hits = hits + value);
 
   const getHits = () => hits;
   const getLength = () => length;
@@ -10,10 +8,10 @@ const ship = (length, hits = 0, sunk = false) => {
   const isSunk = () => {
     const currentLength = getLength();
     const currentHits = getHits();
-    if (currentLength > currentHits) {
-      sunk = false;
-    } else {
+    if (currentHits >= currentLength) {
       sunk = true;
+    } else {
+      sunk = false;
     }
     return getSunk();
   };
