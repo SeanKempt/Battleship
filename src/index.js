@@ -1,3 +1,9 @@
-import './style.css';
+import { ship } from './modules/ship.js';
 
-console.log('hello world');
+const destroyer = ship(4);
+console.log(destroyer);
+console.log(destroyer.getHits());
+destroyer.hit();
+console.log(destroyer.getLength());
+console.log(destroyer.getHits());
+console.log(destroyer.isSunk());
