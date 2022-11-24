@@ -1,6 +1,8 @@
-const ship = (length, hits = 0, sunk = false) => {
+const ship = (length, name, hits = 0, sunk = false) => {
+  const coordinates = [];
   const hit = (value) => (hits = hits + value);
-
+  const getCoordinates = () => coordinates;
+  const setCoordinates = (x, y) => coordinates.push(x, y);
   const getHits = () => hits;
   const getLength = () => length;
   const getSunk = () => sunk;
@@ -15,7 +17,16 @@ const ship = (length, hits = 0, sunk = false) => {
     }
     return getSunk();
   };
-  return { getLength, hit, getHits, isSunk };
+
+  return {
+    name,
+    getLength,
+    hit,
+    getHits,
+    isSunk,
+    getCoordinates,
+    setCoordinates,
+  };
 };
 
 export { ship };
