@@ -8,16 +8,29 @@ const gameBoard = () => {
     shipsOnBoard.push(shipToPlace);
   };
   const receiveAttack = (x, y) => {
-    //check if the attack hit any ships in the shipsOnBoard array
     const hitShip = shipsOnBoard.find(
       (obj) => JSON.stringify(obj.getCoordinates()) === JSON.stringify([x, y])
     );
-    return hitShip;
-    //if the attack didn't hit any of the ships in the array then add it to the missedattacks array
+    if (hitShip) {
+      hitShip.hit(1);
+      return 'Attack successful!';
+    } else {
+      missedAttacks.push([x, y]);
+      return 'The attack missed!';
+    }
+  };
+  const allSunk = () => {
+    return shipsOnBoard.every((obj) => obj.isSunk() === true);
   };
   const getMissedAttacks = () => missedAttacks;
   const getShipsOnBoard = () => shipsOnBoard;
-  return { placeShip, getMissedAttacks, receiveAttack, getShipsOnBoard };
+  return {
+    placeShip,
+    getMissedAttacks,
+    receiveAttack,
+    getShipsOnBoard,
+    allSunk,
+  };
 };
 
 export { gameBoard };
