@@ -1,5 +1,3 @@
-import { ship } from '../modules/ship';
-
 const gameBoard = () => {
   const missedAttacks = [];
   const shipsOnBoard = [];

@@ -1,8 +1,10 @@
 import { gameBoard } from './modules/gameBoard.js';
 import { ship } from './modules/ship.js';
+import { Player } from './modules/player.js';
 
 const destroyer = ship(4, 'destroyer');
 const skif = ship(2, 'skif');
+const submarine = ship(2, 'submarine');
 const game = gameBoard();
 game.placeShip([0, 3], [3, 0], destroyer);
 game.placeShip([1, 3], [2, 3], skif);
