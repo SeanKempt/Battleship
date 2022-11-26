@@ -1,4 +1,4 @@
-const gameBoard = () => {
+const GameBoard = () => {
   const missedAttacks = [];
   const shipsOnBoard = [];
   const placeShip = (x, y, shipToPlace) => {
@@ -31,4 +31,4 @@ const gameBoard = () => {
   };
 };
 
-export { gameBoard };
+export { GameBoard };

@@ -1,4 +1,4 @@
-const ship = (length, name, hits = 0, sunk = false) => {
+const Ship = (length, name, hits = 0, sunk = false) => {
   const coordinates = [];
   const hit = (value) => (hits = hits + value);
   const getCoordinates = () => coordinates;
@@ -29,4 +29,4 @@ const ship = (length, name, hits = 0, sunk = false) => {
   };
 };
 
-export { ship };
+export { Ship };

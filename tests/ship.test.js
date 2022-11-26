@@ -1,5 +1,5 @@
-import { ship } from '../src/modules/ship';
-const testShip = ship(4);
+import { Ship } from '../src/modules/ship';
+const testShip = Ship(4);
 
 describe('ship is operational', () => {
   test('check if the ship is sunk after being hit', () => {
