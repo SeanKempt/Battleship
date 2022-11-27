@@ -27,4 +27,15 @@ const gameSetup = (playerName) => {
   computerPlayerGameBoard.placeShip([3, 5], [5, 5], destroyer);
   computerPlayerGameBoard.placeShip([7, 7], [9, 7], submarine);
   computerPlayerGameBoard.placeShip([8, 8], [9, 8], patrolBoat);
+
+  const whosTurn = () => {
+    if (playerOne.isTurn() === true && computerPlayer.isTurn() === false)
+      playerOne;
+    if (playerOne.isTurn() === false && computerPlayer.isTurn() === true)
+      computerPlayer;
+
+    let currentTurn = whosTurn();
+  };
 };
+
+export { gameSetup };

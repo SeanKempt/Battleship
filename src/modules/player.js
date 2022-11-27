@@ -31,7 +31,7 @@ const Player = (name, isComputer = false) => {
         return;
       }
     };
-    if (getIsComputer() === true && isTurn() === true) {
+    if (getIsComputer() === true) {
       isPreviousAttack(x, y);
       attack(x, y, gameBoard);
     }
