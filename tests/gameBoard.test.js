@@ -49,6 +49,7 @@ describe('player operational', () => {
   });
 
   test('check to make sure a computer attack is not a previous attack', () => {
+    expect(computerTestPlayer.getAttacksSent().length).toBe(0);
     computerTestPlayer.randomAttack(testGameBoard);
     expect(computerTestPlayer.getAttacksSent().length).toBe(1);
   });
