@@ -5,7 +5,7 @@
   "private": "true",
   "scripts": {
     "test": "jest",
-    "build": "webpack",
+    "build": "webpack --config webpack.config.js",
     "watch": "webpack --watch"
   },
   "repository": {
@@ -28,5 +28,9 @@
     "style-loader": "^3.3.1",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.0"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.13",
+    "mini-css-extract-plugin": "^2.7.0"
   }
 }

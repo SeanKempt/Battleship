@@ -1,7 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
+  mode: 'development',
   entry: './src/index.js',
   output: {
     filename: '[name].bundle.js',
@@ -14,12 +16,15 @@ module.exports = {
       title: 'Battleships',
       template: './src/template.html',
     }),
+    new MiniCssExtractPlugin({
+      filename: 'main.css',
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
