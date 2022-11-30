@@ -14,7 +14,7 @@ const GameBoard = () => {
   const generateSquares = () => {
     for (let i = 0; i < row.length; i++) {
       for (let j = 0; j < col.length; j++) {
-        gameSquares.push([row[i], col[j]]);
+        gameSquares.push([row[j], col[i]]);
       }
     }
   };

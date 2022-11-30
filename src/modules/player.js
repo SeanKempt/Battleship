@@ -1,20 +1,27 @@
 //might need to look into creating the gameboard on the players themselves
+import { GameBoard } from './gameBoard';
 
 const Player = (name, isComputer = false) => {
   const attacksSent = [];
+
   const changeTurn = () =>
     playerTurn === true ? (playerTurn = false) : (playerTurn = true);
+
   const attack = (x, y, board) => {
     board.receiveAttack(x, y);
     attacksSent.push([x, y]);
     changeTurn();
   };
+
   const getIsComputer = () => isComputer;
   let playerTurn = true;
+
   const isTurn = () => playerTurn;
+
   const _randNum = () => {
     return Math.floor(Math.random() * 10) + 1;
   };
+
   const randomAttack = (gameBoard) => {
     const x = [_randNum(), _randNum()];
     const y = [_randNum(), _randNum()];

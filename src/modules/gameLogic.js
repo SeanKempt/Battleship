@@ -1,6 +1,10 @@
 import { Player } from './player';
 import { GameBoard } from './gameBoard';
 import { Ship } from './ship';
+import {
+  renderComputerGameBoard,
+  renderPlayerGameBoard,
+} from '../modules/domChanges.js';
 
 const gameSetup = (playerName) => {
   const playerOne = Player(playerName);
@@ -33,9 +37,17 @@ const gameSetup = (playerName) => {
       playerOne;
     if (playerOne.isTurn() === false && computerPlayer.isTurn() === true)
       computerPlayer;
-
-    let currentTurn = whosTurn();
   };
+
+  let currentTurn = whosTurn();
+
+  renderPlayerGameBoard(playerOneGameBoard.getGameSquares());
+
+  renderComputerGameBoard(
+    computerPlayerGameBoard.getGameSquares(),
+    playerOne,
+    computerPlayerGameBoard
+  );
 };
 
 export { gameSetup };

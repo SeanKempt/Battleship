@@ -7,6 +7,7 @@
   background: rgb(127, 45, 45);
   min-height: calc(100vh - 15vh);
   display: flex;
+  flex-direction: column;
 }
 
 #header {
@@ -14,9 +15,18 @@
   background-color: rgb(76, 76, 163);
 }
 
+#board-wrapper {
+  display: flex;
+}
+
 #player {
   margin-right: auto;
   margin-left: 1rem;
+}
+
+#player-name,
+#computer-name {
+  text-align: center;
 }
 
 #computer {
@@ -38,8 +48,8 @@
 }
 
 .gameBoard {
-  min-height: 700px;
-  min-width: 700px;
+  min-height: 500px;
+  min-width: 500px;
   border: 2px black solid;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
