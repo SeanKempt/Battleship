@@ -4,5 +4,4 @@ import { Player } from './modules/player.js';
 import { gameSetup } from './modules/gameLogic.js';
 
 import './style.css';
-console.log(`i'm running`);
-gameSetup(`john`);
+gameSetup('john');

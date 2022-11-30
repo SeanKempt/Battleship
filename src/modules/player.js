@@ -1,15 +1,12 @@
-//might need to look into creating the gameboard on the players themselves
-import { GameBoard } from './gameBoard';
-
 const Player = (name, isComputer = false) => {
   const attacksSent = [];
 
   const changeTurn = () =>
     playerTurn === true ? (playerTurn = false) : (playerTurn = true);
 
-  const attack = (x, y, board) => {
-    board.receiveAttack(x, y);
-    attacksSent.push([x, y]);
+  const attack = (cord, board) => {
+    board.receiveAttack(cord);
+    attacksSent.push(cord);
     changeTurn();
   };
 
@@ -23,24 +20,23 @@ const Player = (name, isComputer = false) => {
   };
 
   const randomAttack = (gameBoard) => {
-    const x = [_randNum(), _randNum()];
-    const y = [_randNum(), _randNum()];
-    const isPreviousAttack = (x, y) => {
+    let cord = [_randNum(), _randNum()];
+
+    const isPreviousAttack = (cord) => {
       if (
         attacksSent.some(
-          (attacks) => JSON.stringify(attacks) === JSON.stringify([x, y])
+          (attacks) => JSON.stringify(attacks) === JSON.stringify(cord)
         )
       ) {
-        x = [_randNum(), _randNum()];
-        y = [_randNum(), _randNum()];
+        cord = [_randNum(), _randNum()];
         return isPreviousAttack(x, y);
       } else {
         return;
       }
     };
     if (getIsComputer() === true) {
-      isPreviousAttack(x, y);
-      attack(x, y, gameBoard);
+      isPreviousAttack(cord);
+      attack(cord, gameBoard);
     }
   };
 

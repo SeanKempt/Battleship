@@ -16,23 +16,49 @@ beforeEach(() => {
 
 describe('is gameboard operational', () => {
   test('check if able to place ship with coordinates', () => {
-    expect(testShip.getCoordinates()).toStrictEqual([]);
-    testGameBoard.placeShip([0, 0], [3, 0], testShip);
+    expect(testShip.getCoordinates()).toStrictEqual(undefined);
+    testGameBoard.placeShip(
+      [
+        [0, 0],
+        [1, 0],
+        [2, 0],
+        [3, 0],
+      ],
+      testShip
+    );
     expect(testShip.getCoordinates()).toStrictEqual([
       [0, 0],
+      [1, 0],
+      [2, 0],
       [3, 0],
     ]);
   });
 
   test('check if receiveAttack hit a ship', () => {
     expect(testShip.getHits()).toBe(0);
-    testGameBoard.placeShip([0, 0], [3, 0], testShip);
-    testGameBoard.receiveAttack([0, 0], [3, 0]);
+    testGameBoard.placeShip(
+      [
+        [0, 0],
+        [1, 0],
+        [2, 0],
+        [3, 0],
+      ],
+      testShip
+    );
+    testGameBoard.receiveAttack([0, 0]);
     expect(testShip.getHits()).toBe(1);
   });
 
   test('check if all ships are sunk on board', () => {
-    testGameBoard.placeShip([0, 0], [3, 0], testShip);
+    testGameBoard.placeShip(
+      [
+        [0, 0],
+        [1, 0],
+        [2, 0],
+        [3, 0],
+      ],
+      testShip
+    );
     expect(testGameBoard.allSunk()).toBe(false);
     testShip.hit(4);
     expect(testGameBoard.allSunk()).toBe(true);
@@ -42,8 +68,16 @@ describe('is gameboard operational', () => {
 describe('player operational', () => {
   test('check if player turn changes after attacking', () => {
     expect(testPlayer.isTurn()).toBe(true);
-    testGameBoard.placeShip([0, 0], [3, 0], testShip);
-    testPlayer.attack([0, 0], [3, 0], testGameBoard);
+    testGameBoard.placeShip(
+      [
+        [0, 0],
+        [1, 0],
+        [2, 0],
+        [3, 0],
+      ],
+      testShip
+    );
+    testPlayer.attack([0, 0], testGameBoard);
     expect(testPlayer.isTurn()).toBe(false);
     expect(testShip.getHits()).toBe(1);
   });

@@ -3,14 +3,16 @@ const GameBoard = () => {
 
   const shipsOnBoard = [];
 
-  const placeShip = (x, y, shipToPlace) => {
-    shipToPlace.setCoordinates(x, y);
+  const placeShip = (cords, shipToPlace) => {
+    shipToPlace.setCoordinates(cords);
     shipsOnBoard.push(shipToPlace);
   };
 
   const row = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const col = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
   const gameSquares = [];
+
   const generateSquares = () => {
     for (let i = 0; i < row.length; i++) {
       for (let j = 0; j < col.length; j++) {
@@ -21,15 +23,18 @@ const GameBoard = () => {
 
   generateSquares();
 
-  const receiveAttack = (x, y) => {
-    const hitShip = shipsOnBoard.find(
-      (obj) => JSON.stringify(obj.getCoordinates()) === JSON.stringify([x, y])
+  const receiveAttack = (cord) => {
+    const hitShip = shipsOnBoard.find((obj) =>
+      obj
+        .getCoordinates()
+        .find((ary) => JSON.stringify(ary) === JSON.stringify(cord))
     );
+
     if (hitShip) {
       hitShip.hit(1);
       return 'Attack successful!';
     } else {
-      missedAttacks.push([x, y]);
+      missedAttacks.push(cord);
       return 'The attack missed!';
     }
   };

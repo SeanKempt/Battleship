@@ -1,8 +1,10 @@
 const Ship = (length, name, hits = 0, sunk = false) => {
-  const coordinates = [];
+  let coordinates;
   const hit = (value) => (hits = hits + value);
   const getCoordinates = () => coordinates;
-  const setCoordinates = (x, y) => coordinates.push(x, y);
+  const setCoordinates = (cords) => {
+    coordinates = cords;
+  };
   const getHits = () => hits;
   const getLength = () => length;
   const getSunk = () => sunk;
