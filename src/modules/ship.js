@@ -1,4 +1,4 @@
-const Ship = (length, name, hits = 0, sunk = false) => {
+const Ship = (length, name, id, hits = 0, sunk = false) => {
   const hit = (value) => (hits = hits + value);
   const getHits = () => hits;
   const getLength = () => length;
@@ -21,6 +21,7 @@ const Ship = (length, name, hits = 0, sunk = false) => {
     hit,
     getHits,
     isSunk,
+    id,
   };
 };
 
