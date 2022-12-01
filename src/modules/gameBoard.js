@@ -30,12 +30,16 @@ const GameBoard = () => {
         .find((ary) => JSON.stringify(ary) === JSON.stringify(cord))
     );
 
-    if (hitShip) {
-      hitShip.hit(1);
-      return 'Attack successful!';
+    _processAttack(hitShip, cord);
+  };
+
+  const _processAttack = (attackedShip, cord) => {
+    if (attackedShip !== undefined) {
+      attackedShip.hit(1);
+      console.log(`Attack successful`);
     } else {
       missedAttacks.push(cord);
-      return 'The attack missed!';
+      console.log(`Attack Missed!`); //replace these with some type of pop up or something that would indicate the attack missed
     }
   };
 
