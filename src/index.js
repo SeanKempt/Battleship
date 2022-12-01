@@ -4,4 +4,5 @@ import { Player } from './modules/player.js';
 import { gameSetup } from './modules/gameLogic.js';
 
 import './style.css';
-gameSetup('john');
+const testGameBoard = GameBoard();
+console.log(testGameBoard.board);

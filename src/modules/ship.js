@@ -1,10 +1,5 @@
 const Ship = (length, name, hits = 0, sunk = false) => {
-  let coordinates;
   const hit = (value) => (hits = hits + value);
-  const getCoordinates = () => coordinates;
-  const setCoordinates = (cords) => {
-    coordinates = cords;
-  };
   const getHits = () => hits;
   const getLength = () => length;
   const getSunk = () => sunk;
@@ -26,8 +21,6 @@ const Ship = (length, name, hits = 0, sunk = false) => {
     hit,
     getHits,
     isSunk,
-    getCoordinates,
-    setCoordinates,
   };
 };
 
