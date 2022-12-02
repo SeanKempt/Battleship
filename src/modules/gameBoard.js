@@ -40,7 +40,7 @@ const GameBoard = () => {
   ];
 
   const placeShip = (name, cords) => {
-    ships[name] = Ship(name, cords, cords.length);
+    ships[name] = Ship(cords.length, name, cords);
 
     for (let i = 0; i < cords.length; i++) {
       const [x, y] = cords[i];
@@ -50,10 +50,34 @@ const GameBoard = () => {
 
   const getBoard = () => board;
 
+  const _arrayisPresent = (a, b) => {
+    a = JSON.stringify(a);
+    b = JSON.stringify(b);
+    const result = a.indexOf(b);
+    if (result != -1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const receiveAttack = (x, y) => {
     const attack = [x, y];
-    let shipId = board[attack[0]][attack[1]];
-    let attackedShipCords = shipsOnBoard[shipId];
+    const pastAttacks = getPastAttacks();
+    let attackedShip = board[attack[0]][attack[1]];
+    let checkAttack = _arrayisPresent(pastAttacks, attack);
+
+    if (checkAttack === false) {
+      if (attackedShip) {
+        pastAttacks.push(attack);
+        attackedShip.hit(1);
+      } else {
+        pastAttacks.push(attack);
+        console.log(`attackMissed`);
+      }
+    } else {
+      return `this attack has already happened. Try another attack!`;
+    }
   };
 
   const allSunk = () => {};
