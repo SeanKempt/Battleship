@@ -3,42 +3,27 @@ import { Ship } from './ship';
 const GameBoard = () => {
   const pastAttacks = [];
 
-  const shipsOnBoard = {
-    1: [
-      [0, 0],
-      [0, 1],
-      [0, 2],
-      [0, 3],
-      [0, 4],
-    ],
-    2: [
+  const ships = {
+    battleship: Ship(4, 'battleship', [
       [6, 0],
       [7, 0],
       [8, 0],
       [9, 0],
-    ],
-    3: [
+    ]),
+    destroyer: Ship(3, 'destroyer', [
       [4, 5],
       [4, 6],
       [4, 7],
-    ],
-    4: [
+    ]),
+    submarine: Ship(3, 'submarine', [
       [4, 8],
       [5, 8],
       [6, 8],
-    ],
-    5: [
+    ]),
+    patrolBoat: Ship(2, 'patrol boat', [
       [9, 2],
       [9, 3],
-    ],
-  };
-
-  const ships = {
-    carrier: Ship(5, 'carrier', 1),
-    battleship: Ship(4, 'battleship', 2),
-    destroyer: Ship(3, 'destroyer', 3),
-    submarine: Ship(3, 'submarine', 4),
-    patrolBoat: Ship(2, 'patrol boat', 5),
+    ]),
   };
 
   const board = [
@@ -54,10 +39,12 @@ const GameBoard = () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ];
 
-  const placeShip = (id, cords = shipsOnBoard[id]) => {
+  const placeShip = (name, cords) => {
+    ships[name] = Ship(name, cords, cords.length);
+
     for (let i = 0; i < cords.length; i++) {
       const [x, y] = cords[i];
-      board[x][y] = id;
+      board[x][y] = ships[name];
     }
   };
 
@@ -79,7 +66,6 @@ const GameBoard = () => {
     placeShip,
     getPastAttacks,
     receiveAttack,
-    shipsOnBoard,
     allSunk,
     board,
     getBoard,
