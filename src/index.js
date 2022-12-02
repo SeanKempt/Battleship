@@ -5,10 +5,11 @@ import { gameSetup } from './modules/gameLogic.js';
 
 import './style.css';
 const testGameBoard = GameBoard();
-console.log(testGameBoard.getBoard());
-testGameBoard.placeShip(1);
-testGameBoard.placeShip(2);
-testGameBoard.placeShip(3);
-testGameBoard.placeShip(4);
-testGameBoard.placeShip(5);
+testGameBoard.placeShip('carrier', [
+  [0, 0],
+  [0, 1],
+  [0, 2],
+  [0, 3],
+  [0, 4],
+]);
 console.log(testGameBoard.getBoard());
