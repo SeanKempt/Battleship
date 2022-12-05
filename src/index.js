@@ -13,3 +13,5 @@ testGameBoard.placeShip('carrier', [
   [0, 4],
 ]);
 console.log(testGameBoard.getBoard());
+console.log(testGameBoard.receiveAttack(0, 0));
+console.log(testGameBoard.getPastAttacks());
