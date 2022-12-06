@@ -3,28 +3,7 @@ import { Ship } from './ship';
 const GameBoard = () => {
   const pastAttacks = [];
 
-  const ships = {
-    battleship: Ship(4, 'battleship', [
-      [6, 0],
-      [7, 0],
-      [8, 0],
-      [9, 0],
-    ]),
-    destroyer: Ship(3, 'destroyer', [
-      [4, 5],
-      [4, 6],
-      [4, 7],
-    ]),
-    submarine: Ship(3, 'submarine', [
-      [4, 8],
-      [5, 8],
-      [6, 8],
-    ]),
-    patrolBoat: Ship(2, 'patrol boat', [
-      [9, 2],
-      [9, 3],
-    ]),
-  };
+  const ships = {};
 
   const board = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -80,11 +59,23 @@ const GameBoard = () => {
     }
   };
 
-  const allSunk = () => {};
+  const allSunk = () => {
+    let results = Object.values(ships);
+    const sunkShip = [];
+    for (let i = 0; i < results.length; i++) {
+      sunkShip.push(results[i].isSunk());
+    }
+    const checkSunkShips = sunkShip.every((element) => element === true);
+    if (checkSunkShips === true) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const getPastAttacks = () => pastAttacks;
 
-  const getShipsOnBoard = () => shipsOnBoard;
+  const getShips = () => ships;
 
   return {
     placeShip,
@@ -93,6 +84,7 @@ const GameBoard = () => {
     allSunk,
     board,
     getBoard,
+    getShips,
   };
 };
 
