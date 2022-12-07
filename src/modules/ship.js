@@ -1,5 +1,8 @@
 const Ship = (length, name, cords, hits = 0, sunk = false) => {
-  const hit = (value) => (hits = hits + value);
+  const hit = (value) => {
+    hits = hits + value;
+    isSunk();
+  };
   const getHits = () => hits;
   const getLength = () => length;
   const getSunk = () => sunk;

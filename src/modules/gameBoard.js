@@ -1,6 +1,6 @@
 import { Ship } from './ship';
 
-const GameBoard = () => {
+const GameBoard = (name) => {
   const pastAttacks = [];
 
   const ships = {};
@@ -50,12 +50,45 @@ const GameBoard = () => {
       if (attackedShip) {
         pastAttacks.push(attack);
         attackedShip.hit(1);
+        if (attackedShip.isSunk()) {
+          console.log(`${attackedShip.name} has been sunk!!!`);
+          _isGameOver();
+        }
+        console.log('Attack Successful!');
       } else {
         pastAttacks.push(attack);
-        console.log(`attackMissed`);
+        console.log(`Attack Missed!`);
       }
+    }
+  };
+
+  const randAttack = (x, y) => {
+    const attack = [x, y];
+    let attackedShip = board[attack[0]][attack[1]];
+    let attackedSquareParent = document.querySelector('div#player-board');
+    let attackedSquare = attackedSquareParent.querySelector(
+      `[data-cord='${x},${y}']`
+    );
+
+    if (attackedShip) {
+      pastAttacks.push(attack);
+      attackedShip.hit(1);
+      attackedSquare.style.backgroundColor = 'pink';
+      if (attackedShip.isSunk()) {
+        console.log(`${attackedShip.name} has been sunk!!!`);
+        _isGameOver();
+      }
+      console.log('Attack Successful!');
     } else {
-      return `this attack has already happened. Try another attack!`;
+      attackedSquare.style.backgroundColor = 'blue';
+      pastAttacks.push(attack);
+      console.log(`Attack Missed!`);
+    }
+  };
+
+  const _isGameOver = () => {
+    if (allSunk()) {
+      alert(`Game is over!`);
     }
   };
 
@@ -78,6 +111,7 @@ const GameBoard = () => {
   const getShips = () => ships;
 
   return {
+    name,
     placeShip,
     getPastAttacks,
     receiveAttack,
@@ -85,6 +119,7 @@ const GameBoard = () => {
     board,
     getBoard,
     getShips,
+    randAttack,
   };
 };
 
