@@ -1,5 +1,5 @@
-import { GameBoard } from '../src/modules/gameBoard';
-import { Player } from '../src/modules/player';
+import GameBoard from '../src/modules/gameBoard';
+import Player from '../src/modules/player';
 
 let testGameBoard = GameBoard();
 let testPlayer = Player('testPlayer');
@@ -40,13 +40,5 @@ describe('is gameboard operational', () => {
     expect(testGameBoard.allSunk()).toBe(false);
     testGameBoard.getShips().carrier.hit(5);
     expect(testGameBoard.allSunk()).toBe(true);
-  });
-});
-
-describe('player operational', () => {
-  test('check to make sure a computer attack is not a previous attack', () => {
-    expect(computerTestPlayer.getAttacksSent().length).toBe(0);
-    computerTestPlayer.randomAttack(testGameBoard);
-    expect(computerTestPlayer.getAttacksSent().length).toBe(1);
   });
 });

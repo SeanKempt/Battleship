@@ -1,31 +1,37 @@
-const Ship = (length, name, cords, hits = 0, sunk = false) => {
-  const hit = (value) => {
-    hits = hits + value;
-    isSunk();
-  };
-  const getHits = () => hits;
-  const getLength = () => length;
-  const getSunk = () => sunk;
+const Ship = (length, name, cords) => {
+    let hits = 0;
+    let sunk = false;
 
-  const isSunk = () => {
-    const currentLength = getLength();
-    const currentHits = getHits();
-    if (currentHits >= currentLength) {
-      sunk = true;
-    } else {
-      sunk = false;
-    }
-    return getSunk();
-  };
+    const getSunk = () => sunk;
 
-  return {
-    name,
-    getLength,
-    hit,
-    getHits,
-    isSunk,
-    cords,
-  };
+    const getLength = () => length;
+
+    const getHits = () => hits;
+
+    const isSunk = () => {
+        const currentLength = getLength();
+        const currentHits = getHits();
+        if (currentHits >= currentLength) {
+            sunk = true;
+        } else {
+            sunk = false;
+        }
+        return getSunk();
+    };
+
+    const hit = (value) => {
+        hits += value;
+        isSunk();
+    };
+
+    return {
+        name,
+        getLength,
+        hit,
+        getHits,
+        isSunk,
+        cords,
+    };
 };
 
-export { Ship };
+export default Ship;

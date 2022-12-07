@@ -1,126 +1,117 @@
-import { Ship } from './ship';
+import Ship from './ship';
+import { arrayisPresent } from './player';
 
 const GameBoard = (name) => {
-  const pastAttacks = [];
+    const pastAttacks = [];
 
-  const ships = {};
+    const ships = {};
 
-  const board = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ];
+    const board = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ];
 
-  const placeShip = (name, cords) => {
-    ships[name] = Ship(cords.length, name, cords);
+    const placeShip = (shipName, cords) => {
+        ships[shipName] = Ship(cords.length, shipName, cords);
 
-    for (let i = 0; i < cords.length; i++) {
-      const [x, y] = cords[i];
-      board[x][y] = ships[name];
-    }
-  };
-
-  const getBoard = () => board;
-
-  const _arrayisPresent = (a, b) => {
-    a = JSON.stringify(a);
-    b = JSON.stringify(b);
-    const result = a.indexOf(b);
-    if (result != -1) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const receiveAttack = (x, y) => {
-    const attack = [x, y];
-    const pastAttacks = getPastAttacks();
-    let attackedShip = board[attack[0]][attack[1]];
-    let checkAttack = _arrayisPresent(pastAttacks, attack);
-
-    if (checkAttack === false) {
-      if (attackedShip) {
-        pastAttacks.push(attack);
-        attackedShip.hit(1);
-        if (attackedShip.isSunk()) {
-          console.log(`${attackedShip.name} has been sunk!!!`);
-          _isGameOver();
+        for (let i = 0; i < cords.length; i += 1) {
+            const [x, y] = cords[i];
+            board[x][y] = ships[shipName];
         }
-        console.log('Attack Successful!');
-      } else {
-        pastAttacks.push(attack);
-        console.log(`Attack Missed!`);
-      }
-    }
-  };
+    };
 
-  const randAttack = (x, y) => {
-    const attack = [x, y];
-    let attackedShip = board[attack[0]][attack[1]];
-    let attackedSquareParent = document.querySelector('div#player-board');
-    let attackedSquare = attackedSquareParent.querySelector(
-      `[data-cord='${x},${y}']`
-    );
+    const getBoard = () => board;
 
-    if (attackedShip) {
-      pastAttacks.push(attack);
-      attackedShip.hit(1);
-      attackedSquare.style.backgroundColor = 'pink';
-      if (attackedShip.isSunk()) {
-        console.log(`${attackedShip.name} has been sunk!!!`);
-        _isGameOver();
-      }
-      console.log('Attack Successful!');
-    } else {
-      attackedSquare.style.backgroundColor = 'blue';
-      pastAttacks.push(attack);
-      console.log(`Attack Missed!`);
-    }
-  };
+    const allSunk = () => {
+        const results = Object.values(ships);
+        const sunkShip = [];
+        for (let i = 0; i < results.length; i += 1) {
+            sunkShip.push(results[i].isSunk());
+        }
+        const checkSunkShips = sunkShip.every((element) => element === true);
+        if (checkSunkShips === true) {
+            return true;
+        }
+        return false;
+    };
 
-  const _isGameOver = () => {
-    if (allSunk()) {
-      alert(`Game is over!`);
-    }
-  };
+    const _isGameOver = () => {
+        if (allSunk()) {
+            console.log(`Game is over!`);
+        }
+    };
 
-  const allSunk = () => {
-    let results = Object.values(ships);
-    const sunkShip = [];
-    for (let i = 0; i < results.length; i++) {
-      sunkShip.push(results[i].isSunk());
-    }
-    const checkSunkShips = sunkShip.every((element) => element === true);
-    if (checkSunkShips === true) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+    const getPastAttacks = () => pastAttacks;
 
-  const getPastAttacks = () => pastAttacks;
+    const receiveAttack = (x, y) => {
+        const attack = [x, y];
+        const oldAttacks = getPastAttacks();
+        const attackedShip = board[attack[0]][attack[1]];
+        const checkAttack = arrayisPresent(oldAttacks, attack);
+        const attackedSquareParent = document.querySelector('div#computer-board');
+        const attackedSquare = attackedSquareParent.querySelector(`[data-cord='${x},${y}']`);
 
-  const getShips = () => ships;
+        if (checkAttack === false) {
+            if (attackedShip) {
+                oldAttacks.push(attack);
+                attackedShip.hit(1);
+                attackedSquare.style.backgroundColor = 'pink';
+                if (attackedShip.isSunk()) {
+                    console.log(`${attackedShip.name} has been sunk!!!`);
+                    _isGameOver();
+                }
+                console.log('Attack Successful!');
+            } else {
+                oldAttacks.push(attack);
+                attackedSquare.style.backgroundColor = 'blue';
+                console.log(`Attack Missed!`);
+            }
+        }
+    };
 
-  return {
-    name,
-    placeShip,
-    getPastAttacks,
-    receiveAttack,
-    allSunk,
-    board,
-    getBoard,
-    getShips,
-    randAttack,
-  };
+    const randAttack = (x, y) => {
+        const attack = [x, y];
+        const attackedShip = board[attack[0]][attack[1]];
+        const attackedSquareParent = document.querySelector('div#player-board');
+        const attackedSquare = attackedSquareParent.querySelector(`[data-cord='${x},${y}']`);
+
+        if (attackedShip) {
+            pastAttacks.push(attack);
+            attackedShip.hit(1);
+            attackedSquare.style.backgroundColor = 'pink';
+            if (attackedShip.isSunk()) {
+                console.log(`${attackedShip.name} has been sunk!!!`);
+                _isGameOver();
+            }
+            console.log('Attack Successful!');
+        } else {
+            attackedSquare.style.backgroundColor = 'blue';
+            pastAttacks.push(attack);
+            console.log(`Attack Missed!`);
+        }
+    };
+
+    const getShips = () => ships;
+
+    return {
+        name,
+        placeShip,
+        getPastAttacks,
+        receiveAttack,
+        allSunk,
+        board,
+        getBoard,
+        getShips,
+        randAttack,
+    };
 };
 
-export { GameBoard };
+export default GameBoard;
