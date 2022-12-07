@@ -41,19 +41,24 @@ const shipSetup = (board) => {
 
 const gameSetup = () => {
   //create player and computer objects and boards
-  const playerBoard = GameBoard();
-  const playerOne = Player('Sean');
+  const playerBoard = GameBoard('playerBoard');
+  const playerOne = Player('Sean', true);
 
-  const computerBoard = GameBoard();
-  const cpu = Player('computer', true);
-
-  //render the squares on the UI
-  renderComputerGameBoard(computerBoard, playerOne);
-  renderPlayerGameBoard(playerBoard);
+  const computerBoard = GameBoard('computerBoard');
+  const cpu = Player('computer', false, true);
 
   //put the ships on the board for the player and computer
   shipSetup(playerBoard);
   shipSetup(computerBoard);
+
+  //render the squares on the UI
+  renderComputerGameBoard(computerBoard, playerOne, cpu, playerBoard);
+  renderPlayerGameBoard(playerBoard);
+
+  //turn based actions...
+  // need to create game loop somehow
+
+  //while loop???
 };
 
 export { gameSetup };

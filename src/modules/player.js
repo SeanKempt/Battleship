@@ -1,23 +1,12 @@
 import { GameBoard } from './gameBoard';
 
-const Player = (name, isComputer = false) => {
+const Player = (name, turn = false, isComputer = false) => {
   const attacksSent = [];
 
-  const changeTurn = () =>
-    playerTurn === true ? (playerTurn = false) : (playerTurn = true);
+  const changeTurn = () => (turn === true ? (turn = false) : (turn = true));
 
-  // make player able to call an attack which uses the gameboard attack
   const attack = (x, y, enemyBoard) => {
     enemyBoard.receiveAttack(x, y);
-  };
-
-  const getIsComputer = () => isComputer;
-  let playerTurn = true;
-
-  const isTurn = () => playerTurn;
-
-  const _randNum = () => {
-    return Math.floor(Math.random() * 10);
   };
 
   const randomAttack = (enemyBoard, x = _randNum(), y = _randNum()) => {
@@ -26,10 +15,10 @@ const Player = (name, isComputer = false) => {
     if (checkAttack === true) {
       x = _randNum();
       y = _randNum();
-      randomAttack(x, y, enemyBoard);
+      randomAttack(enemyBoard, x, y);
     } else {
       attacksSent.push([x, y]);
-      attack(x, y, enemyBoard);
+      enemyBoard.randAttack(x, y);
     }
   };
 
@@ -44,6 +33,10 @@ const Player = (name, isComputer = false) => {
     }
   };
 
+  const _randNum = () => {
+    return Math.floor(Math.random() * 10);
+  };
+
   const _isPreviousAttack = (x, y, pastAttacks) => {
     let attack = [x, y];
     let checkAttack = _arrayisPresent(pastAttacks, attack);
@@ -54,7 +47,12 @@ const Player = (name, isComputer = false) => {
     }
   };
 
+  const isTurn = () => turn;
+
+  const getIsComputer = () => isComputer;
+
   const getAttacksSent = () => attacksSent;
+
   return {
     name,
     isTurn,
