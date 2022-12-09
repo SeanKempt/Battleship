@@ -1,3 +1,7 @@
+body {
+  font-family: 'Roboto Mono', monospace;
+}
+
 #wrapper {
   display: flex;
   flex-direction: column;
@@ -13,6 +17,9 @@
 #header {
   min-height: 10vh;
   background-color: rgb(76, 76, 163);
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
 
 #board-wrapper {
@@ -42,16 +49,28 @@
   margin: 0;
 }
 
+#title {
+  font-size: 3rem;
+  text-align: center;
+}
+
 .gameSquare {
   min-height: 20px;
   border: 1px black solid;
 }
 
 .gameBoard {
-  min-height: 500px;
-  min-width: 500px;
+  min-height: 600px;
+  min-width: 600px;
   border: 2px black solid;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(auto-fill, minmax(1fr, 1fr));
+  grid-template-columns: repeat(10, 60px);
+  grid-template-rows: repeat(auto-fill, minmax(60px, 1fr));
+}
+
+.hit {
+  display: flex;
+  font-size: 3em;
+  justify-content: center;
+  align-items: center;
 }

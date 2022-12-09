@@ -63,7 +63,8 @@ const GameBoard = (name) => {
             if (attackedShip) {
                 oldAttacks.push(attack);
                 attackedShip.hit(1);
-                attackedSquare.style.backgroundColor = 'pink';
+                attackedSquare.innerHTML = `&#x1F4A5`;
+                attackedSquare.classList.add('hit');
                 if (attackedShip.isSunk()) {
                     console.log(`${attackedShip.name} has been sunk!!!`);
                     _isGameOver();
@@ -86,7 +87,8 @@ const GameBoard = (name) => {
         if (attackedShip) {
             pastAttacks.push(attack);
             attackedShip.hit(1);
-            attackedSquare.style.backgroundColor = 'pink';
+            attackedSquare.innerHTML = `&#x1F4A5`;
+            attackedSquare.classList.add('hit');
             if (attackedShip.isSunk()) {
                 console.log(`${attackedShip.name} has been sunk!!!`);
                 _isGameOver();
