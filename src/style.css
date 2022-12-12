@@ -8,7 +8,7 @@ body {
 }
 
 #main-content {
-  background: rgb(127, 45, 45);
+  background: #575756;
   min-height: calc(100vh - 15vh);
   display: flex;
   flex-direction: column;
@@ -34,6 +34,7 @@ body {
 #player-name,
 #computer-name {
   text-align: center;
+  font-size: 1.5rem;
 }
 
 #computer {
@@ -54,6 +55,11 @@ body {
   text-align: center;
 }
 
+#computer-board,
+#player-board {
+  background-color: rgb(47, 155, 0);
+}
+
 .gameSquare {
   min-height: 20px;
   border: 1px black solid;
@@ -68,9 +74,9 @@ body {
   grid-template-rows: repeat(auto-fill, minmax(60px, 1fr));
 }
 
-.hit {
+.attacked {
   display: flex;
-  font-size: 3em;
+  font-size: 2.4em;
   justify-content: center;
   align-items: center;
 }
