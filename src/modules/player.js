@@ -25,9 +25,7 @@ const Player = (name, currentTurn, isComputer = false) => {
     }
   };
 
-  const sendAttack = (x, y, enemyBoard) => {
-    enemyBoard.receiveAttack(x, y);
-  };
+  const sendAttack = (x, y, enemyBoard) => enemyBoard.receiveAttack(x, y);
 
   const _randNum = () => Math.floor(Math.random() * 10);
 
