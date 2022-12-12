@@ -1,5 +1,4 @@
 import Ship from './ship';
-import { sunkShipAlert } from './domChanges';
 
 const GameBoard = (name) => {
   const pastAttacks = [];
@@ -53,13 +52,12 @@ const GameBoard = (name) => {
 
   const receiveAttack = (x, y) => {
     const attack = [x, y];
-    const oldAttacks = getPastAttacks();
     const attackedShip = board[attack[0]][attack[1]];
 
+    const oldAttacks = getPastAttacks();
     if (attackedShip) {
       oldAttacks.push(attack);
       attackedShip.hit(1);
-      console.log(attackedShip.getHits());
       console.log('Attack Successful!');
       if (attackedShip.isSunk()) {
         _isGameOver();
@@ -68,38 +66,30 @@ const GameBoard = (name) => {
       return 'hit';
     }
 
-    // how do can I get this to return the object so I can use the name in the dom
-    // changes function.
-
     oldAttacks.push(attack);
+    console.log(`Attack Missed!`);
     return `miss`;
   };
 
   const randAttack = (x, y) => {
     const attack = [x, y];
     const attackedShip = board[attack[0]][attack[1]];
-    const attackedSquareParent = document.querySelector('div#player-board');
-    const main = document.querySelector('#main-content');
-    const attackedSquare = attackedSquareParent.querySelector(
-      `[data-cord='${x},${y}']`
-    );
+    const oldAttacks = getPastAttacks();
 
     if (attackedShip) {
-      pastAttacks.push(attack);
+      oldAttacks.push(attack);
       attackedShip.hit(1);
-      attackedSquare.innerHTML = `&#x1F4A5`;
-      attackedSquare.classList.add('attacked');
-      if (attackedShip.isSunk()) {
-        sunkShipAlert(main, `Player`, attackedShip.name);
-        _isGameOver();
-      }
       console.log('Attack Successful!');
-    } else {
-      attackedSquare.innerHTML = '❌';
-      attackedSquare.classList.add('attacked');
-      pastAttacks.push(attack);
-      console.log(`Attack Missed!`);
+      console.log(attackedShip.getHits());
+      if (attackedShip.isSunk()) {
+        _isGameOver();
+        return { hit: true, sunk: true, x, y, attackedShip };
+      }
+      return { hit: true, sunk: false, x, y, attackedShip };
     }
+    oldAttacks.push(attack);
+    console.log(`Attack Missed!`);
+    return { hit: false, sunk: false, x, y, attackedShip };
   };
 
   const getShips = () => ships;

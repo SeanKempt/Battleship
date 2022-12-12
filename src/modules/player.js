@@ -46,11 +46,10 @@ const Player = (name, currentTurn, isComputer = false) => {
     if (checkAttack === true) {
       const newX = _randNum();
       const newY = _randNum();
-      randomAttack(enemyBoard, newX, newY);
-    } else {
-      attacksSent.push([x, y]);
-      enemyBoard.randAttack(x, y);
+      return randomAttack(enemyBoard, newX, newY);
     }
+    attacksSent.push([x, y]);
+    return enemyBoard.randAttack(x, y);
   };
 
   const getIsComputer = () => isComputer;

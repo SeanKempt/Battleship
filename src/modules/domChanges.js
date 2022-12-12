@@ -33,6 +33,12 @@ const sunkShipAlert = (element, player, shipName) => {
   element.insertBefore(alertDiv, boardWrapper);
 };
 
+const _getRandAttackedSquare = (x, y) => {
+  const squaresParent = document.querySelector('div#player-board');
+  const square = squaresParent.querySelector(`[data-cord='${x},${y}']`);
+  return square;
+};
+
 const attackEventListener = (
   element,
   playerObj,
@@ -57,6 +63,8 @@ const attackEventListener = (
       );
       const main = document.querySelector('#main-content');
       const sendAttack = playerObj.sendAttack(x, y, enemyBoard);
+      const randomAttack = enemyObj.randomAttack(pBoard);
+      console.log(randomAttack.x, randomAttack.y);
       // what happens when its not the players turn and starts with the computer? Its going to break
       if (playerObj.isTurn() === true) {
         if (sendAttack === `hit`) {
@@ -65,7 +73,6 @@ const attackEventListener = (
         } else if (sendAttack === `miss`) {
           attackedSquare.innerHTML = '❌';
           attackedSquare.classList.add('attacked');
-          console.log(`Attack Missed!`);
         } else {
           attackedSquare.innerHTML = `&#x1F4A5`;
           attackedSquare.classList.add('attacked');
@@ -75,11 +82,26 @@ const attackEventListener = (
         enemyObj.changeTurn();
       }
 
-      if (enemyObj.isTurn() === true) {
-        enemyObj.randomAttack(pBoard);
-        enemyObj.changeTurn();
-        playerObj.changeTurn();
+      if (randomAttack.hit === true) {
+        const randAttackedSquare = _getRandAttackedSquare(
+          randomAttack.x,
+          randomAttack.y
+        );
+        randAttackedSquare.innerHTML = `&#x1F4A5`;
+        randAttackedSquare.classList.add('attacked');
+        if (randomAttack.sunk === true) {
+          sunkShipAlert(main, playerObj, randomAttack.attackedShip.name);
+        }
+      } else if (randomAttack.hit === false) {
+        const randAttackedSquare = _getRandAttackedSquare(
+          randomAttack.x,
+          randomAttack.y
+        );
+        randAttackedSquare.innerHTML = '❌';
+        randAttackedSquare.classList.add('attacked');
       }
+      enemyObj.changeTurn();
+      playerObj.changeTurn();
     },
     { once: true }
   );
