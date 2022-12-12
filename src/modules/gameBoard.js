@@ -1,5 +1,4 @@
 import Ship from './ship';
-import { arrayisPresent } from './player';
 import { sunkShipAlert } from './domChanges';
 
 const GameBoard = (name) => {
@@ -56,31 +55,24 @@ const GameBoard = (name) => {
     const attack = [x, y];
     const oldAttacks = getPastAttacks();
     const attackedShip = board[attack[0]][attack[1]];
-    const checkAttack = arrayisPresent(oldAttacks, attack);
-    const attackedSquareParent = document.querySelector('div#computer-board');
-    const attackedSquare = attackedSquareParent.querySelector(
-      `[data-cord='${x},${y}']`
-    );
-    const main = document.querySelector('#main-content');
 
-    if (checkAttack === false) {
-      if (attackedShip) {
-        oldAttacks.push(attack);
-        attackedShip.hit(1);
-        attackedSquare.innerHTML = `&#x1F4A5`;
-        attackedSquare.classList.add('attacked');
-        if (attackedShip.isSunk()) {
-          sunkShipAlert(main, `Computer`, attackedShip.name);
-          _isGameOver();
-        }
-        console.log('Attack Successful!');
-      } else {
-        oldAttacks.push(attack);
-        attackedSquare.innerHTML = '❌';
-        attackedSquare.classList.add('attacked');
-        console.log(`Attack Missed!`);
+    if (attackedShip) {
+      oldAttacks.push(attack);
+      attackedShip.hit(1);
+      console.log(attackedShip.getHits());
+      console.log('Attack Successful!');
+      if (attackedShip.isSunk()) {
+        _isGameOver();
+        return attackedShip;
       }
+      return 'hit';
     }
+
+    // how do can I get this to return the object so I can use the name in the dom
+    // changes function.
+
+    oldAttacks.push(attack);
+    return `miss`;
   };
 
   const randAttack = (x, y) => {
