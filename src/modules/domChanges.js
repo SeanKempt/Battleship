@@ -14,6 +14,25 @@ const renderPlayerGameBoard = (board) => {
   }
 };
 
+const sunkShipAlert = (element, player, shipName) => {
+  const alertDiv = document.createElement('div');
+  const alertCloseBtn = document.createElement('button');
+  const boardWrapper = document.querySelector('#board-wrapper');
+  alertCloseBtn.classList.add('btn-close');
+  alertCloseBtn.setAttribute('data-bs-dismiss', 'alert');
+  alertDiv.classList.add(
+    'alert',
+    'alert-warning',
+    'alert-dismissible',
+    'fade',
+    'show',
+    'role="alert"'
+  );
+  alertDiv.textContent = `${player.name}'s ${shipName} has been sunk!`;
+  alertDiv.appendChild(alertCloseBtn);
+  element.insertBefore(alertDiv, boardWrapper);
+};
+
 const attackEventListener = (
   element,
   playerObj,
@@ -32,9 +51,26 @@ const attackEventListener = (
     'click',
     () => {
       const [x, y] = newCord;
+      const attackedSquareParent = document.querySelector('div#computer-board');
+      const attackedSquare = attackedSquareParent.querySelector(
+        `[data-cord='${x},${y}']`
+      );
+      const main = document.querySelector('#main-content');
+      const sendAttack = playerObj.sendAttack(x, y, enemyBoard);
       // what happens when its not the players turn and starts with the computer? Its going to break
       if (playerObj.isTurn() === true) {
-        playerObj.sendAttack(x, y, enemyBoard);
+        if (sendAttack === `hit`) {
+          attackedSquare.innerHTML = `&#x1F4A5`;
+          attackedSquare.classList.add('attacked');
+        } else if (sendAttack === `miss`) {
+          attackedSquare.innerHTML = '❌';
+          attackedSquare.classList.add('attacked');
+          console.log(`Attack Missed!`);
+        } else {
+          attackedSquare.innerHTML = `&#x1F4A5`;
+          attackedSquare.classList.add('attacked');
+          sunkShipAlert(main, enemyObj, sendAttack.name);
+        }
         playerObj.changeTurn();
         enemyObj.changeTurn();
       }
@@ -62,25 +98,6 @@ const renderComputerGameBoard = (cpuBoard, playerObj, cpuObj, pBoard) => {
       computerBoard.appendChild(square);
     }
   }
-};
-
-const sunkShipAlert = (element, player, shipName) => {
-  const alertDiv = document.createElement('div');
-  const alertCloseBtn = document.createElement('button');
-  const boardWrapper = document.querySelector('#board-wrapper');
-  alertCloseBtn.classList.add('btn-close');
-  alertCloseBtn.setAttribute('data-bs-dismiss', 'alert');
-  alertDiv.classList.add(
-    'alert',
-    'alert-warning',
-    'alert-dismissible',
-    'fade',
-    'show',
-    'role="alert"'
-  );
-  alertDiv.textContent = `${player.name}'s ${shipName} has been sunk!`;
-  alertDiv.appendChild(alertCloseBtn);
-  element.insertBefore(alertDiv, boardWrapper);
 };
 
 // if clicked it checks if its the players turn; if its the players turn then it launches the attack and changes the turns for both the player and the computer
