@@ -39,6 +39,23 @@ const _getRandAttackedSquare = (x, y) => {
   return square;
 };
 
+const _domAttackLogic = (user, enemy, square, attack) => {
+  const targetSquare = square;
+  const main = document.querySelector('#main-content');
+  if (user.isTurn() === true) {
+    if (attack.hit === true) {
+      targetSquare.innerHTML = `&#x1F4A5`;
+      targetSquare.classList.add('attacked');
+      if (attack.sunk === true) {
+        sunkShipAlert(main, enemy, attack.attackedShip.name);
+      }
+    } else if (attack.hit === false) {
+      targetSquare.innerHTML = '❌';
+      targetSquare.classList.add('attacked');
+    }
+  }
+};
+
 const attackEventListener = (
   element,
   playerObj,
@@ -61,45 +78,17 @@ const attackEventListener = (
       const attackedSquare = attackedSquareParent.querySelector(
         `[data-cord='${x},${y}']`
       );
-      const main = document.querySelector('#main-content');
       const sendAttack = playerObj.sendAttack(x, y, enemyBoard);
       const randomAttack = enemyObj.randomAttack(pBoard);
-      console.log(randomAttack.x, randomAttack.y);
-      // what happens when its not the players turn and starts with the computer? Its going to break
-      if (playerObj.isTurn() === true) {
-        if (sendAttack === `hit`) {
-          attackedSquare.innerHTML = `&#x1F4A5`;
-          attackedSquare.classList.add('attacked');
-        } else if (sendAttack === `miss`) {
-          attackedSquare.innerHTML = '❌';
-          attackedSquare.classList.add('attacked');
-        } else {
-          attackedSquare.innerHTML = `&#x1F4A5`;
-          attackedSquare.classList.add('attacked');
-          sunkShipAlert(main, enemyObj, sendAttack.name);
-        }
-        playerObj.changeTurn();
-        enemyObj.changeTurn();
-      }
+      const randAttackedSquare = _getRandAttackedSquare(
+        randomAttack.x,
+        randomAttack.y
+      );
+      _domAttackLogic(playerObj, enemyObj, attackedSquare, sendAttack);
+      playerObj.changeTurn();
+      enemyObj.changeTurn();
 
-      if (randomAttack.hit === true) {
-        const randAttackedSquare = _getRandAttackedSquare(
-          randomAttack.x,
-          randomAttack.y
-        );
-        randAttackedSquare.innerHTML = `&#x1F4A5`;
-        randAttackedSquare.classList.add('attacked');
-        if (randomAttack.sunk === true) {
-          sunkShipAlert(main, playerObj, randomAttack.attackedShip.name);
-        }
-      } else if (randomAttack.hit === false) {
-        const randAttackedSquare = _getRandAttackedSquare(
-          randomAttack.x,
-          randomAttack.y
-        );
-        randAttackedSquare.innerHTML = '❌';
-        randAttackedSquare.classList.add('attacked');
-      }
+      _domAttackLogic(enemyObj, playerObj, randAttackedSquare, randomAttack);
       enemyObj.changeTurn();
       playerObj.changeTurn();
     },

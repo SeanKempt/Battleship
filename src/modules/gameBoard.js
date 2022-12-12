@@ -53,22 +53,21 @@ const GameBoard = (name) => {
   const receiveAttack = (x, y) => {
     const attack = [x, y];
     const attackedShip = board[attack[0]][attack[1]];
-
     const oldAttacks = getPastAttacks();
+
     if (attackedShip) {
       oldAttacks.push(attack);
       attackedShip.hit(1);
       console.log('Attack Successful!');
       if (attackedShip.isSunk()) {
         _isGameOver();
-        return attackedShip;
+        return { hit: true, sunk: true, x, y, attackedShip };
       }
-      return 'hit';
+      return { hit: true, sunk: false, x, y, attackedShip };
     }
-
     oldAttacks.push(attack);
     console.log(`Attack Missed!`);
-    return `miss`;
+    return { hit: false, sunk: false, x, y, attackedShip };
   };
 
   const randAttack = (x, y) => {
@@ -80,7 +79,6 @@ const GameBoard = (name) => {
       oldAttacks.push(attack);
       attackedShip.hit(1);
       console.log('Attack Successful!');
-      console.log(attackedShip.getHits());
       if (attackedShip.isSunk()) {
         _isGameOver();
         return { hit: true, sunk: true, x, y, attackedShip };
