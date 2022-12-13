@@ -8,7 +8,7 @@ const renderPlayerGameBoard = (board) => {
       const square = document.createElement('div');
       square.dataset.cord = [[i], [j]];
       square.innerHTML = '';
-      square.classList.add('gameSquare');
+      square.classList.add('gameSquare', 'user-select-none');
       playerBoard.appendChild(square);
     }
   }
@@ -22,11 +22,13 @@ const sunkShipAlert = (element, player, shipName) => {
   alertCloseBtn.setAttribute('data-bs-dismiss', 'alert');
   alertDiv.classList.add(
     'alert',
-    'alert-warning',
+    'alert-danger',
     'alert-dismissible',
     'fade',
     'show',
-    'role="alert"'
+    'role="alert"',
+    'position-absolute',
+    'w-100'
   );
   alertDiv.textContent = `${player.name}'s ${shipName} has been sunk!`;
   alertDiv.appendChild(alertCloseBtn);
@@ -104,7 +106,7 @@ const renderComputerGameBoard = (cpuBoard, playerObj, cpuObj, pBoard) => {
       square.dataset.cord = [[i], [j]];
       const { cord } = square.dataset;
       square.innerHTML = '';
-      square.classList.add('gameSquare');
+      square.classList.add('gameSquare', 'user-select-none');
       attackEventListener(square, playerObj, cpuBoard, cpuObj, pBoard, cord);
       computerBoard.appendChild(square);
     }

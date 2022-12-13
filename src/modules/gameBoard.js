@@ -50,9 +50,9 @@ const GameBoard = (name) => {
 
   const getPastAttacks = () => pastAttacks;
 
-  const receiveAttack = (x, y) => {
+  const processAttack = (x, y, gBoard) => {
     const attack = [x, y];
-    const attackedShip = board[attack[0]][attack[1]];
+    const attackedShip = gBoard[attack[0]][attack[1]];
     const oldAttacks = getPastAttacks();
 
     if (attackedShip) {
@@ -70,25 +70,10 @@ const GameBoard = (name) => {
     return { hit: false, sunk: false, x, y, attackedShip };
   };
 
-  const randAttack = (x, y) => {
-    const attack = [x, y];
-    const attackedShip = board[attack[0]][attack[1]];
-    const oldAttacks = getPastAttacks();
+  // might be able to refactor these two functions since they return the same value.
+  const receiveAttack = (x, y) => processAttack(x, y, board);
 
-    if (attackedShip) {
-      oldAttacks.push(attack);
-      attackedShip.hit(1);
-      console.log('Attack Successful!');
-      if (attackedShip.isSunk()) {
-        _isGameOver();
-        return { hit: true, sunk: true, x, y, attackedShip };
-      }
-      return { hit: true, sunk: false, x, y, attackedShip };
-    }
-    oldAttacks.push(attack);
-    console.log(`Attack Missed!`);
-    return { hit: false, sunk: false, x, y, attackedShip };
-  };
+  const randAttack = (x, y) => processAttack(x, y, board);
 
   const getShips = () => ships;
 

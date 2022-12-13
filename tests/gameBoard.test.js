@@ -1,13 +1,7 @@
 import GameBoard from '../src/modules/gameBoard';
-import Player from '../src/modules/player';
 
-let testGameBoard = GameBoard();
-let testPlayer = Player('testPlayer');
-let computerTestPlayer = Player('computerTestPlayer', true);
-
+const testGameBoard = GameBoard();
 beforeEach(() => {
-  testGameBoard = GameBoard();
-  testPlayer = Player('testPlayer');
   testGameBoard.placeShip('carrier', [
     [0, 0],
     [1, 0],
@@ -15,7 +9,6 @@ beforeEach(() => {
     [3, 0],
     [4, 0],
   ]);
-  computerTestPlayer = Player('computerTestPlayer', true);
 });
 
 describe('is gameboard operational', () => {
@@ -39,6 +32,7 @@ describe('is gameboard operational', () => {
   test('check if all ships are sunk on board', () => {
     expect(testGameBoard.allSunk()).toBe(false);
     testGameBoard.getShips().carrier.hit(5);
+    testGameBoard.getShips().battleship.hit(4);
     expect(testGameBoard.allSunk()).toBe(true);
   });
 });
