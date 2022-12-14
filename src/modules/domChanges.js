@@ -1,7 +1,29 @@
 const playerBoard = document.getElementById('player-board');
 const computerBoard = document.getElementById('computer-board');
+const main = document.querySelector('#main-content');
 
+// const shipPlacementEvent = () => {};
+
+// const renderFleet = () => {};
+
+const shipCarrier = () => {
+  const carrierContainer = document.createElement('div');
+  carrierContainer.classList.add('ship');
+  carrierContainer.setAttribute('draggable', true);
+  for (let i = 0; i < 5; i += 1) {
+    const carrierCell = document.createElement('div');
+    carrierCell.classList.add('shipcell');
+    carrierContainer.appendChild(carrierCell);
+  }
+  carrierContainer.addEventListener('dragstart', (event) => {
+    event.dataTransfer.setData('text/html', 'this is a ship');
+  });
+  return carrierContainer;
+};
+
+// going to have to change the target of the drag programattically to something different
 const renderPlayerGameBoard = (board) => {
+  main.appendChild(shipCarrier()); // remember to remove this when you are done developing the ship container stuff
   const boardSquares = board.getBoard();
   for (let i = 0; i < boardSquares.length; i += 1) {
     for (let j = 0; j < boardSquares[i].length; j += 1) {
@@ -9,6 +31,16 @@ const renderPlayerGameBoard = (board) => {
       square.dataset.cord = [[i], [j]];
       square.innerHTML = '';
       square.classList.add('gameSquare', 'user-select-none');
+      square.addEventListener('dragover', (event) => {
+        const isShip = event.dataTransfer.types.includes('text/html');
+        if (isShip) {
+          event.preventDefault();
+        }
+      });
+      square.addEventListener('drop', (event) => {
+        event.preventDefault();
+        square.style.backgroundColor = 'white';
+      });
       playerBoard.appendChild(square);
     }
   }
@@ -43,13 +75,13 @@ const _getRandAttackedSquare = (x, y) => {
 
 const _domAttackLogic = (user, enemy, square, attack) => {
   const targetSquare = square;
-  const main = document.querySelector('#main-content');
+  const mainConatiner = document.querySelector('#main-content');
   if (user.isTurn() === true) {
     if (attack.hit === true) {
       targetSquare.innerHTML = `&#x1F4A5`;
       targetSquare.classList.add('attacked');
       if (attack.sunk === true) {
-        sunkShipAlert(main, enemy, attack.attackedShip.name);
+        sunkShipAlert(mainConatiner, enemy, attack.attackedShip.name);
       }
     } else if (attack.hit === false) {
       targetSquare.innerHTML = '❌';
