@@ -98,3 +98,23 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.carrier {
+  background-color: violet;
+}
+
+.patrolboat {
+  background-color: orange;
+}
+
+.submarine {
+  background-color: aqua;
+}
+
+.destroyer {
+  background-color: blueviolet;
+}
+
+.battleship {
+  background-color: bisque;
+}

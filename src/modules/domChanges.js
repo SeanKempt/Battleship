@@ -2,28 +2,89 @@ const playerBoard = document.getElementById('player-board');
 const computerBoard = document.getElementById('computer-board');
 const main = document.querySelector('#main-content');
 
-// const shipPlacementEvent = () => {};
-
-// const renderFleet = () => {};
-
-const shipCarrier = () => {
-  const carrierContainer = document.createElement('div');
-  carrierContainer.classList.add('ship');
-  carrierContainer.setAttribute('draggable', true);
-  for (let i = 0; i < 5; i += 1) {
-    const carrierCell = document.createElement('div');
-    carrierCell.classList.add('shipcell');
-    carrierContainer.appendChild(carrierCell);
-  }
-  carrierContainer.addEventListener('dragstart', (event) => {
-    event.dataTransfer.setData('text/html', 'this is a ship');
+const dragStarter = (e) => {
+  e.addEventListener('dragstart', (event) => {
+    event.dataTransfer.setData('text/plain', [
+      event.target.dataset.id,
+      event.target.dataset.shiplength,
+    ]); // fill with regular html plus the class for the ship
   });
-  return carrierContainer;
 };
 
-// going to have to change the target of the drag programattically to something different
+// used to convert the coordinates from the html elements to numbers
+const cordsToNum = (cords) => {
+  const stringCords = cords.split(',');
+  const numCords = [];
+  for (let i = 0; i < stringCords.length; i += 1) {
+    numCords.push(parseInt(stringCords[i], 10));
+  }
+  return numCords;
+};
+
+// finds square elements that match the coordinates that are passed in and provide them in an array
+const findCordSquares = (cords) => {
+  const squaresParent = document.querySelector('div#player-board');
+  const squareElements = [];
+  for (let i = 0; i < cords.length; i += 1) {
+    const square = squaresParent.querySelector(
+      `[data-cord=${CSS.escape(cords[i])}]`
+    );
+    squareElements.push(square);
+  }
+  return squareElements;
+};
+
+const dropEvent = (e, board) => {
+  e.preventDefault();
+  const cell = e.target;
+  const data = e.dataTransfer.getData('text/plain').split(',');
+  const name = data[0];
+  const shipLength = data[1];
+  let cords = cell.getAttribute('data-cord');
+  cords = cordsToNum(cords);
+  const placedShip = board.placeShip(`${name}`, [cords], shipLength);
+  console.log(board.getBoard());
+  findCordSquares(placedShip).forEach(
+    (element) => element.classList.add(`${name}`) // need to refactor all of this code into modules or into seperate functions
+  );
+};
+
+// used to create the dom ship elements on the page
+const shipFactory = (name, length) => {
+  const ship = Object.freeze({
+    name,
+    domEl: document.createElement('div'),
+  });
+  ship.domEl.dataset.id = name;
+  ship.domEl.dataset.shiplength = length;
+  ship.domEl.setAttribute('draggable', true);
+  ship.domEl.classList.add('ship');
+  dragStarter(ship.domEl);
+  for (let i = 0; i < length; i += 1) {
+    const cell = document.createElement('div');
+    cell.classList.add('shipcell');
+    ship.domEl.appendChild(cell);
+  }
+  return ship.domEl;
+};
+
+// creating the dom ship elements using the factory
+const carrier = shipFactory('carrier', 5);
+const battleship = shipFactory('battleship', 4);
+const destroyer = shipFactory('destroyer', 3);
+const submarine = shipFactory('submarine', 3);
+const patrolboat = shipFactory('patrolboat', 2);
+
+const renderDraggableShips = () => {
+  // remember to remove this when you are done developing the ship container stuff
+  main.appendChild(carrier);
+  main.appendChild(battleship);
+  main.appendChild(destroyer);
+  main.appendChild(submarine);
+  main.appendChild(patrolboat);
+};
+
 const renderPlayerGameBoard = (board) => {
-  main.appendChild(shipCarrier()); // remember to remove this when you are done developing the ship container stuff
   const boardSquares = board.getBoard();
   for (let i = 0; i < boardSquares.length; i += 1) {
     for (let j = 0; j < boardSquares[i].length; j += 1) {
@@ -32,14 +93,13 @@ const renderPlayerGameBoard = (board) => {
       square.innerHTML = '';
       square.classList.add('gameSquare', 'user-select-none');
       square.addEventListener('dragover', (event) => {
-        const isShip = event.dataTransfer.types.includes('text/html');
+        const isShip = event.dataTransfer.types.includes('text/plain');
         if (isShip) {
           event.preventDefault();
         }
       });
       square.addEventListener('drop', (event) => {
-        event.preventDefault();
-        square.style.backgroundColor = 'white';
+        dropEvent(event, board);
       });
       playerBoard.appendChild(square);
     }
@@ -147,4 +207,9 @@ const renderComputerGameBoard = (cpuBoard, playerObj, cpuObj, pBoard) => {
 
 // if clicked it checks if its the players turn; if its the players turn then it launches the attack and changes the turns for both the player and the computer
 
-export { renderPlayerGameBoard, renderComputerGameBoard, sunkShipAlert };
+export {
+  renderPlayerGameBoard,
+  renderComputerGameBoard,
+  sunkShipAlert,
+  renderDraggableShips,
+};
