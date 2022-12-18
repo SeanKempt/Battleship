@@ -63,10 +63,27 @@ const dropEvent = (e, board) => {
   cords = cordsToNum(cords);
   cords = coordinateCorrection(cords);
   const placedShip = board.placeShip(`${name}`, [cords], shipLength);
-  console.log(board.getBoard());
-  findCordSquares(placedShip).forEach(
-    (element) => element.classList.add(`${name}`) // need to refactor all of this code into modules or into seperate functions
-  );
+
+  const isSquareTaken = () => {
+    let result;
+    findCordSquares(placedShip).forEach((element) => {
+      if (element.classList.contains('reserved')) {
+        result = true;
+        return result;
+      }
+      return result;
+    });
+    return result;
+  };
+
+  if (isSquareTaken()) {
+    return false;
+  }
+  findCordSquares(placedShip).forEach((element) => {
+    element.classList.add(`${name}`);
+    element.classList.add(`reserved`);
+  });
+  return true;
 };
 
 // used to create the dom ship elements on the page
@@ -228,8 +245,6 @@ const renderComputerGameBoard = (cpuBoard, playerObj, cpuObj, pBoard) => {
     }
   }
 };
-
-// if clicked it checks if its the players turn; if its the players turn then it launches the attack and changes the turns for both the player and the computer
 
 export {
   renderPlayerGameBoard,

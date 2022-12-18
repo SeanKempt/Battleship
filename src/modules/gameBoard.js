@@ -45,10 +45,10 @@ const GameBoard = (name) => {
 
   const placeShip = (shipName, cords, shipLength, direction = 'horizontal') => {
     const updatedCords = adjustCords(cords, shipLength, direction);
-    ships[shipName] = Ship(shipLength, shipName, updatedCords);
     if (!validateShipPosition(updatedCords)) {
-      console.error(`This is not a valid position`);
+      return false;
     }
+    ships[shipName] = Ship(shipLength, shipName, updatedCords);
 
     for (let i = 0; i < updatedCords.length; i += 1) {
       const [x, y] = updatedCords[i];
