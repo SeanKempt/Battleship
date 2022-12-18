@@ -7,8 +7,27 @@ const dragStarter = (e) => {
     event.dataTransfer.setData('text/plain', [
       event.target.dataset.id,
       event.target.dataset.shiplength,
-    ]); // fill with regular html plus the class for the ship
+    ]);
   });
+};
+
+let shipIndex;
+
+const getDragShipIndex = (e) => {
+  shipIndex = Number(e.target.dataset.index);
+  return shipIndex;
+};
+// used to gather the index of the cell that gets dragged with the ship container
+const addShipIndex = (element) => {
+  element.addEventListener('mousedown', getDragShipIndex);
+};
+
+// changes the coordinates to equal where the ship preview is getting dropped based on the captured ship index
+const coordinateCorrection = (cords, direction = 'horizontal') => {
+  let [x, y] = cords;
+  x -= direction === 'horizontal' ? 0 : shipIndex;
+  y -= direction === 'horizontal' ? shipIndex : 0;
+  return [x, y];
 };
 
 // used to convert the coordinates from the html elements to numbers
@@ -42,6 +61,7 @@ const dropEvent = (e, board) => {
   const shipLength = data[1];
   let cords = cell.getAttribute('data-cord');
   cords = cordsToNum(cords);
+  cords = coordinateCorrection(cords);
   const placedShip = board.placeShip(`${name}`, [cords], shipLength);
   console.log(board.getBoard());
   findCordSquares(placedShip).forEach(
@@ -60,9 +80,11 @@ const shipFactory = (name, length) => {
   ship.domEl.setAttribute('draggable', true);
   ship.domEl.classList.add('ship');
   dragStarter(ship.domEl);
+  addShipIndex(ship.domEl);
   for (let i = 0; i < length; i += 1) {
     const cell = document.createElement('div');
     cell.classList.add('shipcell');
+    cell.dataset.index = [i];
     ship.domEl.appendChild(cell);
   }
   return ship.domEl;
@@ -75,13 +97,15 @@ const destroyer = shipFactory('destroyer', 3);
 const submarine = shipFactory('submarine', 3);
 const patrolboat = shipFactory('patrolboat', 2);
 
+// adds ships to the UI for the user to drag
 const renderDraggableShips = () => {
-  // remember to remove this when you are done developing the ship container stuff
-  main.appendChild(carrier);
-  main.appendChild(battleship);
-  main.appendChild(destroyer);
-  main.appendChild(submarine);
-  main.appendChild(patrolboat);
+  const fleetContainer = document.createElement('div');
+  main.appendChild(fleetContainer);
+  fleetContainer.appendChild(carrier);
+  fleetContainer.appendChild(battleship);
+  fleetContainer.appendChild(destroyer);
+  fleetContainer.appendChild(submarine);
+  fleetContainer.appendChild(patrolboat);
 };
 
 const renderPlayerGameBoard = (board) => {
