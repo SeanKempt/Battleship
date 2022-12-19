@@ -4,9 +4,11 @@ import {
   renderComputerGameBoard,
   renderDraggableShips,
   renderPlayerGameBoard,
+  renderWelcomeModal,
 } from './domChanges';
 
 const gameSetup = () => {
+  renderWelcomeModal();
   // create player and computer objects and boards
   const playerBoard = GameBoard('playerBoard');
   const playerOne = Player('Sean', true);

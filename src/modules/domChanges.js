@@ -1,3 +1,5 @@
+import { createWelcomeModal } from './domComponents';
+
 const playerBoard = document.getElementById('player-board');
 const computerBoard = document.getElementById('computer-board');
 const main = document.querySelector('#main-content');
@@ -246,9 +248,15 @@ const renderComputerGameBoard = (cpuBoard, playerObj, cpuObj, pBoard) => {
   }
 };
 
+const renderWelcomeModal = () => {
+  const body = document.querySelector('body');
+  body.appendChild(createWelcomeModal());
+};
+
 export {
   renderPlayerGameBoard,
   renderComputerGameBoard,
   sunkShipAlert,
   renderDraggableShips,
+  renderWelcomeModal,
 };
