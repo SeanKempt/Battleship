@@ -4,11 +4,10 @@ import {
   renderComputerGameBoard,
   renderPlayerGameBoard,
   renderWelcomeModal,
-  renderShipFlyout,
 } from './domChanges';
 
 const gameSetup = () => {
-  renderShipFlyout();
+  renderWelcomeModal();
   // create player and computer objects and boards
   const playerBoard = GameBoard('playerBoard');
   const playerOne = Player('Sean', true);
@@ -18,6 +17,7 @@ const gameSetup = () => {
 
   // render the squares on the UI
   renderComputerGameBoard(computerBoard, playerOne, cpu, playerBoard);
+  computerBoard.generateComputerShipPlacement();
   renderPlayerGameBoard(playerBoard);
 
   console.log(computerBoard.getBoard());

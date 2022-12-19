@@ -1,4 +1,8 @@
-import { createShipFlyout, createWelcomeModal } from './domComponents';
+import {
+  createGameOverModal,
+  createShipFlyout,
+  createWelcomeModal,
+} from './domComponents';
 
 const playerBoard = document.getElementById('player-board');
 const computerBoard = document.getElementById('computer-board');
@@ -68,6 +72,17 @@ const removeDragShip = (shipName) => {
   fleetContainer.removeChild(shipTitleToRemove);
 };
 
+// if all the ships from the fleet container are placed/gone then hide the flyout element
+const shipPlacementComplete = () => {
+  const fleet = document.querySelector('#fleetcontainer');
+  const flyout = document.querySelector('.offcanvas');
+  if (fleet.childNodes.length === 0) {
+    flyout.classList.toggle('show');
+    return true;
+  }
+  return false;
+};
+
 const dropEvent = (e, board) => {
   e.preventDefault();
   const cell = e.target;
@@ -99,6 +114,7 @@ const dropEvent = (e, board) => {
     element.classList.add(`reserved`);
   });
   removeDragShip(name);
+  shipPlacementComplete();
   return true;
 };
 
@@ -283,11 +299,6 @@ const renderComputerGameBoard = (cpuBoard, playerObj, cpuObj, pBoard) => {
   }
 };
 
-const renderWelcomeModal = () => {
-  const body = document.querySelector('body');
-  body.appendChild(createWelcomeModal());
-};
-
 const renderShipFlyout = () => {
   const body = document.querySelector('body');
   const shipFlyout = createShipFlyout();
@@ -297,11 +308,36 @@ const renderShipFlyout = () => {
   shipFlyoutBody.appendChild(ships);
 };
 
+const hideWelcome = () => {
+  const welcomeModal = document.querySelector('#welcome-modal');
+  welcomeModal.style.display = 'none';
+};
+
+const startBtnEvent = (element) => {
+  element.addEventListener('click', () => {
+    renderShipFlyout();
+    hideWelcome();
+  });
+  return element;
+};
+
+const renderGameOverModal = () => {
+  const body = document.querySelector('body');
+  body.appendChild(createGameOverModal());
+};
+
+const renderWelcomeModal = () => {
+  const body = document.querySelector('body');
+  body.appendChild(createWelcomeModal());
+  const startBtn = document.querySelector('#startBtn');
+  startBtnEvent(startBtn);
+};
+
 export {
   renderPlayerGameBoard,
   renderComputerGameBoard,
   sunkShipAlert,
   renderDraggableShips,
   renderWelcomeModal,
-  renderShipFlyout,
+  renderGameOverModal,
 };

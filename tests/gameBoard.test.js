@@ -2,24 +2,32 @@ import GameBoard from '../src/modules/gameBoard';
 
 const testGameBoard = GameBoard();
 beforeEach(() => {
-  testGameBoard.placeShip('carrier', [
-    [0, 0],
-    [1, 0],
-    [2, 0],
-    [3, 0],
-    [4, 0],
-  ]);
+  testGameBoard.placeShip(
+    'carrier',
+    [
+      [0, 0],
+      [1, 0],
+      [2, 0],
+      [3, 0],
+      [4, 0],
+    ],
+    5
+  );
 });
 
 describe('is gameboard operational', () => {
   test('check if able to place ship with coordinates', () => {
     expect(Object.keys(testGameBoard.getShips()).length).toBe(1);
-    testGameBoard.placeShip('battleship', [
-      [6, 0],
-      [7, 0],
-      [8, 0],
-      [9, 0],
-    ]);
+    testGameBoard.placeShip(
+      'battleship',
+      [
+        [6, 0],
+        [7, 0],
+        [8, 0],
+        [9, 0],
+      ],
+      4
+    );
     expect(Object.keys(testGameBoard.getShips()).length).toBe(2);
   });
 
