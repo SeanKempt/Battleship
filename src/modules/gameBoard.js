@@ -18,13 +18,43 @@ const GameBoard = (name) => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ];
 
-  const placeShip = (shipName, cords) => {
-    ships[shipName] = Ship(cords.length, shipName, cords);
+  const adjustCords = (cords, shipLength, direction) => {
+    const newCords = [];
+    for (let i = 0; i < shipLength; i += 1) {
+      if (direction === 'vertical') {
+        const x0 = cords[0][0] + i;
+        const y0 = cords[0][1];
+        newCords.push([x0, y0]);
+      }
+      const x0 = cords[0][0];
+      const y0 = cords[0][1] + i;
+      newCords.push([x0, y0]);
+    }
+    return newCords;
+  };
 
+  const validateShipPosition = (cords) => {
     for (let i = 0; i < cords.length; i += 1) {
-      const [x, y] = cords[i];
+      const x = cords[i][0];
+      const y = cords[i][1];
+      if (x > 10 || y > 10) return false;
+      if (x < 0 || y < 0) return false;
+    }
+    return true;
+  }; // need to make sure that the ship is placed within the gameboards bounds and if it isn't then we do something
+
+  const placeShip = (shipName, cords, shipLength, direction = 'horizontal') => {
+    const updatedCords = adjustCords(cords, shipLength, direction);
+    if (!validateShipPosition(updatedCords)) {
+      return false;
+    }
+    ships[shipName] = Ship(shipLength, shipName, updatedCords);
+
+    for (let i = 0; i < updatedCords.length; i += 1) {
+      const [x, y] = updatedCords[i];
       board[x][y] = ships[shipName];
     }
+    return updatedCords;
   };
 
   const getBoard = () => board;
