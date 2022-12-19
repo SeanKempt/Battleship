@@ -2,7 +2,6 @@ import GameBoard from './gameBoard';
 import { Player } from './player';
 import {
   renderComputerGameBoard,
-  renderDraggableShips,
   renderPlayerGameBoard,
   renderWelcomeModal,
   renderShipFlyout,

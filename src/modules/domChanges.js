@@ -2,7 +2,6 @@ import { createShipFlyout, createWelcomeModal } from './domComponents';
 
 const playerBoard = document.getElementById('player-board');
 const computerBoard = document.getElementById('computer-board');
-const main = document.querySelector('#main-content');
 
 const dragStarter = (e) => {
   e.addEventListener('dragstart', (event) => {
@@ -10,6 +9,7 @@ const dragStarter = (e) => {
       event.target.dataset.id,
       event.target.dataset.shiplength,
     ]);
+    // const shipFlyout = document.querySelector('.offcanvas');
   });
 };
 
@@ -55,6 +55,19 @@ const findCordSquares = (cords) => {
   return squareElements;
 };
 
+// removes the ship from the flyout whenever it gets placed on the gameboard
+const removeDragShip = (shipName) => {
+  const fleetContainer = document.querySelector(`#fleetcontainer`);
+  const shipToRemove = document.querySelector(
+    `#fleetcontainer [data-id=${shipName}]`
+  );
+  const shipTitleToRemove = document.querySelectorAll(
+    `#fleetcontainer .shipTitle`
+  )[0];
+  fleetContainer.removeChild(shipToRemove);
+  fleetContainer.removeChild(shipTitleToRemove);
+};
+
 const dropEvent = (e, board) => {
   e.preventDefault();
   const cell = e.target;
@@ -85,6 +98,7 @@ const dropEvent = (e, board) => {
     element.classList.add(`${name}`);
     element.classList.add(`reserved`);
   });
+  removeDragShip(name);
   return true;
 };
 
@@ -119,10 +133,31 @@ const patrolboat = shipFactory('patrolboat', 2);
 // adds ships to the UI for the user to drag
 const renderDraggableShips = () => {
   const fleetContainer = document.createElement('div');
+  fleetContainer.setAttribute('id', 'fleetcontainer');
+  const carrierTitle = document.createElement('p');
+  carrierTitle.classList.add('shipTitle');
+  const battleshipTitle = document.createElement('p');
+  battleshipTitle.classList.add('shipTitle');
+  const destroyerTitle = document.createElement('p');
+  destroyerTitle.classList.add('shipTitle');
+  const submarineTitle = document.createElement('p');
+  submarineTitle.classList.add('shipTitle');
+  const patrolBoatTitle = document.createElement('p');
+  patrolBoatTitle.classList.add('shipTitle');
+  carrierTitle.textContent = 'Carrier';
+  battleshipTitle.textContent = 'Battleship';
+  destroyerTitle.textContent = 'Destroyer';
+  submarineTitle.textContent = 'Submarine';
+  patrolBoatTitle.textContent = 'Patrol Boat';
+  fleetContainer.appendChild(carrierTitle);
   fleetContainer.appendChild(carrier);
+  fleetContainer.appendChild(battleshipTitle);
   fleetContainer.appendChild(battleship);
+  fleetContainer.appendChild(destroyerTitle);
   fleetContainer.appendChild(destroyer);
+  fleetContainer.appendChild(submarineTitle);
   fleetContainer.appendChild(submarine);
+  fleetContainer.appendChild(patrolBoatTitle);
   fleetContainer.appendChild(patrolboat);
   return fleetContainer;
 };
