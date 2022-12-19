@@ -1,4 +1,4 @@
-import { createWelcomeModal } from './domComponents';
+import { createShipFlyout, createWelcomeModal } from './domComponents';
 
 const playerBoard = document.getElementById('player-board');
 const computerBoard = document.getElementById('computer-board');
@@ -119,12 +119,12 @@ const patrolboat = shipFactory('patrolboat', 2);
 // adds ships to the UI for the user to drag
 const renderDraggableShips = () => {
   const fleetContainer = document.createElement('div');
-  main.appendChild(fleetContainer);
   fleetContainer.appendChild(carrier);
   fleetContainer.appendChild(battleship);
   fleetContainer.appendChild(destroyer);
   fleetContainer.appendChild(submarine);
   fleetContainer.appendChild(patrolboat);
+  return fleetContainer;
 };
 
 const renderPlayerGameBoard = (board) => {
@@ -253,10 +253,20 @@ const renderWelcomeModal = () => {
   body.appendChild(createWelcomeModal());
 };
 
+const renderShipFlyout = () => {
+  const body = document.querySelector('body');
+  const shipFlyout = createShipFlyout();
+  const ships = renderDraggableShips();
+  body.appendChild(shipFlyout);
+  const shipFlyoutBody = document.querySelector('.offcanvas-body');
+  shipFlyoutBody.appendChild(ships);
+};
+
 export {
   renderPlayerGameBoard,
   renderComputerGameBoard,
   sunkShipAlert,
   renderDraggableShips,
   renderWelcomeModal,
+  renderShipFlyout,
 };

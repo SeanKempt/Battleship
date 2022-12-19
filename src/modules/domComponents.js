@@ -34,4 +34,23 @@ const createWelcomeModal = () => {
   return modalOuterWrapper;
 };
 
-export { createWelcomeModal };
+const createShipFlyout = () => {
+  const flyoutConatiner = document.createElement('div');
+  const flyoutHeader = document.createElement('div');
+  const flyoutBody = document.createElement('div');
+  const flyoutTitle = document.createElement('h5');
+  flyoutConatiner.setAttribute('id', '#shipflyout');
+  flyoutConatiner.classList.add('offcanvas', 'show', 'offcanvas-start');
+  flyoutHeader.classList.add('offcanvas-header');
+  flyoutTitle.classList.add('offcanvas-title');
+  flyoutBody.classList.add('offcanvas-body');
+  flyoutConatiner.appendChild(flyoutHeader);
+  flyoutConatiner.appendChild(flyoutBody);
+  flyoutHeader.appendChild(flyoutTitle);
+  flyoutTitle.textContent = `Ships to be Placed`;
+  flyoutBody.textContent = 'hello';
+  flyoutConatiner.style.display = 'block';
+  return flyoutConatiner;
+};
+
+export { createWelcomeModal, createShipFlyout };
