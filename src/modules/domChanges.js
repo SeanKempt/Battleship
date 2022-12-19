@@ -61,9 +61,9 @@ const removeDragShip = (shipName) => {
   const shipToRemove = document.querySelector(
     `#fleetcontainer [data-id=${shipName}]`
   );
-  const shipTitleToRemove = document.querySelectorAll(
-    `#fleetcontainer .shipTitle`
-  )[0];
+  const shipTitleToRemove = document.querySelector(
+    `#fleetcontainer #${shipName}`
+  );
   fleetContainer.removeChild(shipToRemove);
   fleetContainer.removeChild(shipTitleToRemove);
 };
@@ -135,15 +135,15 @@ const renderDraggableShips = () => {
   const fleetContainer = document.createElement('div');
   fleetContainer.setAttribute('id', 'fleetcontainer');
   const carrierTitle = document.createElement('p');
-  carrierTitle.classList.add('shipTitle');
+  carrierTitle.setAttribute('id', 'carrier');
   const battleshipTitle = document.createElement('p');
-  battleshipTitle.classList.add('shipTitle');
+  battleshipTitle.setAttribute('id', 'battleship');
   const destroyerTitle = document.createElement('p');
-  destroyerTitle.classList.add('shipTitle');
+  destroyerTitle.setAttribute('id', 'destroyer');
   const submarineTitle = document.createElement('p');
-  submarineTitle.classList.add('shipTitle');
+  submarineTitle.setAttribute('id', 'submarine');
   const patrolBoatTitle = document.createElement('p');
-  patrolBoatTitle.classList.add('shipTitle');
+  patrolBoatTitle.setAttribute('id', 'patrolboat');
   carrierTitle.textContent = 'Carrier';
   battleshipTitle.textContent = 'Battleship';
   destroyerTitle.textContent = 'Destroyer';
