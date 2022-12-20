@@ -321,9 +321,20 @@ const startBtnEvent = (element) => {
   return element;
 };
 
+const resetDom = () => {};
+
+const playAgainBtnEvent = (element) => {
+  element.addEventListener('click', () => {
+    resetDom();
+  });
+  return element;
+};
+
 const renderGameOverModal = () => {
   const body = document.querySelector('body');
   body.appendChild(createGameOverModal());
+  const playAgainBtn = document.querySelector('#playagainBtn');
+  playAgainBtnEvent(playAgainBtn);
 };
 
 const renderWelcomeModal = () => {

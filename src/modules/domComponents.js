@@ -66,7 +66,7 @@ const createGameOverModal = () => {
   const modalContinueBtn = document.createElement('button');
   const modalTitle = document.createElement('h1');
   modalContinueBtn.setAttribute('type', 'button');
-  modalContinueBtn.setAttribute('id', 'startBtn');
+  modalContinueBtn.setAttribute('id', 'playagainBtn');
   modalOuterWrapper.classList.add('modal');
   modalOuterWrapper.setAttribute('id', 'gameover-modal');
   modalOuterWrapper.style.display = `block`;
