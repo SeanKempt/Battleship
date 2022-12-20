@@ -80,6 +80,7 @@ const shipPlacementComplete = () => {
   const flyout = document.querySelector('.offcanvas');
   if (fleet.childNodes.length === 0) {
     flyout.classList.toggle('show');
+    removeFlyout();
     return true;
   }
   return false;
@@ -323,6 +324,12 @@ const removePlayAgainModal = () => {
   const body = document.querySelector('body');
   const gameoverModal = document.querySelector('#gameover-modal');
   body.removeChild(gameoverModal);
+};
+
+const removeFlyout = () => {
+  const flyout = document.querySelector('.offcanvas');
+  const body = document.querySelector('body');
+  body.removeChild(flyout);
 };
 
 const startBtnEvent = (element) => {
