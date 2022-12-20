@@ -56,7 +56,7 @@ const createShipFlyout = () => {
   return flyoutContainer;
 };
 
-const createGameOverModal = () => {
+const createGameOverModal = (winnerName) => {
   const modalOuterWrapper = document.createElement('div');
   const modalContainer = document.createElement('div');
   const modalContent = document.createElement('div');
@@ -88,10 +88,43 @@ const createGameOverModal = () => {
   modalContent.appendChild(modalBody);
   modalContent.appendChild(modalFooter);
   modalFooter.appendChild(modalContinueBtn);
-  modalTitle.textContent = `GameOver!`;
-  modalBody.textContent = `Better luck next time!`;
+  modalTitle.textContent = `Gameover!`;
+  modalBody.textContent = `${winnerName} wins! Better luck next time!`;
   modalContinueBtn.textContent = 'Play Again';
   return modalOuterWrapper;
 };
 
-export { createWelcomeModal, createShipFlyout, createGameOverModal };
+const createPlayerBoard = (playerName) => {
+  const playerContainer = document.createElement('div');
+  playerContainer.setAttribute('id', 'player');
+  const playerTitle = document.createElement('p');
+  playerTitle.setAttribute('id', 'player-name');
+  playerTitle.textContent = `${playerName}`;
+  const playerBoard = document.createElement('div');
+  playerBoard.setAttribute('id', 'player-board');
+  playerBoard.classList.add('gameBoard');
+  playerContainer.appendChild(playerTitle);
+  playerContainer.appendChild(playerBoard);
+  return playerContainer;
+};
+const createCpuBoard = () => {
+  const computerContainer = document.createElement('div');
+  computerContainer.setAttribute('id', 'computer');
+  const computerTitle = document.createElement('p');
+  computerTitle.setAttribute('id', 'computer-name');
+  computerTitle.textContent = `Computer`;
+  const computerBoard = document.createElement('div');
+  computerBoard.setAttribute('id', 'computer-board');
+  computerBoard.classList.add('gameBoard');
+  computerContainer.appendChild(computerTitle);
+  computerContainer.appendChild(computerBoard);
+  return computerContainer;
+};
+
+export {
+  createWelcomeModal,
+  createShipFlyout,
+  createGameOverModal,
+  createPlayerBoard,
+  createCpuBoard,
+};

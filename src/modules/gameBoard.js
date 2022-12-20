@@ -1,4 +1,3 @@
-import { renderGameOverModal } from './domChanges';
 import Ship from './ship';
 
 const GameBoard = (name) => {
@@ -86,13 +85,6 @@ const GameBoard = (name) => {
     return false;
   };
 
-  const _isGameOver = () => {
-    if (allSunk()) {
-      renderGameOverModal();
-      console.log(`gameover`);
-    }
-  };
-
   const getPastAttacks = () => pastAttacks;
 
   const processAttack = (x, y, gBoard) => {
@@ -105,7 +97,6 @@ const GameBoard = (name) => {
       attackedShip.hit(1);
       console.log('Attack Successful!');
       if (attackedShip.isSunk()) {
-        _isGameOver();
         return { hit: true, sunk: true, x, y, attackedShip };
       }
       return { hit: true, sunk: false, x, y, attackedShip };

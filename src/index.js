@@ -1,6 +1,6 @@
 import './style.css';
 import './scss/styles.scss';
 import 'bootstrap';
-import gameSetup from './modules/gameLogic';
+import { renderWelcomeModal } from './modules/domChanges';
 
-gameSetup();
+renderWelcomeModal();

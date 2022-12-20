@@ -1,11 +1,13 @@
+/* eslint-disable no-use-before-define */
 import {
+  createCpuBoard,
   createGameOverModal,
+  createPlayerBoard,
   createShipFlyout,
   createWelcomeModal,
 } from './domComponents';
-
-const playerBoard = document.getElementById('player-board');
-const computerBoard = document.getElementById('computer-board');
+import GameBoard from './gameBoard';
+import { Player } from './player';
 
 const dragStarter = (e) => {
   e.addEventListener('dragstart', (event) => {
@@ -178,7 +180,11 @@ const renderDraggableShips = () => {
   return fleetContainer;
 };
 
-const renderPlayerGameBoard = (board) => {
+const renderPlayerGameBoard = (board, playerName) => {
+  const boardWrapper = document.querySelector('#board-wrapper');
+  const player = createPlayerBoard(playerName);
+  boardWrapper.appendChild(player);
+  const playersBoard = player.querySelector('#player-board');
   const boardSquares = board.getBoard();
   for (let i = 0; i < boardSquares.length; i += 1) {
     for (let j = 0; j < boardSquares[i].length; j += 1) {
@@ -195,7 +201,7 @@ const renderPlayerGameBoard = (board) => {
       square.addEventListener('drop', (event) => {
         dropEvent(event, board);
       });
-      playerBoard.appendChild(square);
+      playersBoard.appendChild(square);
     }
   }
 };
@@ -227,23 +233,6 @@ const _getRandAttackedSquare = (x, y) => {
   return square;
 };
 
-const _domAttackLogic = (user, enemy, square, attack) => {
-  const targetSquare = square;
-  const mainConatiner = document.querySelector('#main-content');
-  if (user.isTurn() === true) {
-    if (attack.hit === true) {
-      targetSquare.innerHTML = `&#x1F4A5`;
-      targetSquare.classList.add('attacked');
-      if (attack.sunk === true) {
-        sunkShipAlert(mainConatiner, enemy, attack.attackedShip.name);
-      }
-    } else if (attack.hit === false) {
-      targetSquare.innerHTML = '❌';
-      targetSquare.classList.add('attacked');
-    }
-  }
-};
-
 const attackEventListener = (
   element,
   playerObj,
@@ -272,11 +261,23 @@ const attackEventListener = (
         randomAttack.x,
         randomAttack.y
       );
-      _domAttackLogic(playerObj, enemyObj, attackedSquare, sendAttack);
+      _domAttackLogic(
+        playerObj,
+        enemyObj,
+        attackedSquare,
+        sendAttack,
+        enemyBoard
+      );
       playerObj.changeTurn();
       enemyObj.changeTurn();
 
-      _domAttackLogic(enemyObj, playerObj, randAttackedSquare, randomAttack);
+      _domAttackLogic(
+        enemyObj,
+        playerObj,
+        randAttackedSquare,
+        randomAttack,
+        pBoard
+      );
       enemyObj.changeTurn();
       playerObj.changeTurn();
     },
@@ -285,6 +286,10 @@ const attackEventListener = (
 };
 
 const renderComputerGameBoard = (cpuBoard, playerObj, cpuObj, pBoard) => {
+  const boardWrapper = document.querySelector('#board-wrapper');
+  const computer = createCpuBoard();
+  boardWrapper.appendChild(computer);
+  const board = computer.querySelector('#computer-board');
   const cpuSquares = cpuBoard.getBoard();
   for (let i = 0; i < cpuSquares.length; i += 1) {
     for (let j = 0; j < cpuSquares[i].length; j += 1) {
@@ -294,7 +299,7 @@ const renderComputerGameBoard = (cpuBoard, playerObj, cpuObj, pBoard) => {
       square.innerHTML = '';
       square.classList.add('gameSquare', 'user-select-none');
       attackEventListener(square, playerObj, cpuBoard, cpuObj, pBoard, cord);
-      computerBoard.appendChild(square);
+      board.appendChild(square);
     }
   }
 };
@@ -308,33 +313,37 @@ const renderShipFlyout = () => {
   shipFlyoutBody.appendChild(ships);
 };
 
-const hideWelcome = () => {
+const removeWelcomeModal = () => {
+  const body = document.querySelector('body');
   const welcomeModal = document.querySelector('#welcome-modal');
-  welcomeModal.style.display = 'none';
+  body.removeChild(welcomeModal);
+};
+
+const removePlayAgainModal = () => {
+  const body = document.querySelector('body');
+  const gameoverModal = document.querySelector('#gameover-modal');
+  body.removeChild(gameoverModal);
 };
 
 const startBtnEvent = (element) => {
   element.addEventListener('click', () => {
+    const playerBoard = GameBoard('playerBoard');
+    const playerOne = Player('Player', true);
+
+    const computerBoard = GameBoard('computerBoard');
+    const cpu = Player('computer', false, true);
+
+    // render the squares on the UI
+    renderPlayerGameBoard(playerBoard, 'Player');
+    renderComputerGameBoard(computerBoard, playerOne, cpu, playerBoard);
+    computerBoard.generateComputerShipPlacement();
+
+    console.log(computerBoard.getBoard());
+    console.log(playerBoard.getBoard());
     renderShipFlyout();
-    hideWelcome();
+    removeWelcomeModal();
   });
   return element;
-};
-
-const resetDom = () => {};
-
-const playAgainBtnEvent = (element) => {
-  element.addEventListener('click', () => {
-    resetDom();
-  });
-  return element;
-};
-
-const renderGameOverModal = () => {
-  const body = document.querySelector('body');
-  body.appendChild(createGameOverModal());
-  const playAgainBtn = document.querySelector('#playagainBtn');
-  playAgainBtnEvent(playAgainBtn);
 };
 
 const renderWelcomeModal = () => {
@@ -342,6 +351,53 @@ const renderWelcomeModal = () => {
   body.appendChild(createWelcomeModal());
   const startBtn = document.querySelector('#startBtn');
   startBtnEvent(startBtn);
+};
+
+const resetGame = () => {
+  const boardWrapper = document.querySelector('#board-wrapper');
+  while (boardWrapper.firstChild) {
+    boardWrapper.removeChild(boardWrapper.lastChild);
+  }
+  renderWelcomeModal();
+};
+
+const playAgainBtnEvent = (element) => {
+  element.addEventListener('click', () => {
+    removePlayAgainModal();
+    resetGame();
+  });
+  return element;
+};
+
+const renderGameOverModal = (winnerName) => {
+  const body = document.querySelector('body');
+  body.appendChild(createGameOverModal(winnerName));
+  const playAgainBtn = document.querySelector('#playagainBtn');
+  playAgainBtnEvent(playAgainBtn);
+};
+
+const isGameOver = (winner, board) => {
+  if (board.allSunk()) {
+    renderGameOverModal(winner.name);
+  }
+};
+
+const _domAttackLogic = (user, enemy, square, attack, attackedBoard) => {
+  const targetSquare = square;
+  const mainConatiner = document.querySelector('#main-content');
+  if (user.isTurn() === true) {
+    if (attack.hit === true) {
+      targetSquare.innerHTML = `&#x1F4A5`;
+      targetSquare.classList.add('attacked');
+      if (attack.sunk === true) {
+        isGameOver(user, attackedBoard);
+        sunkShipAlert(mainConatiner, enemy, attack.attackedShip.name);
+      }
+    } else if (attack.hit === false) {
+      targetSquare.innerHTML = '❌';
+      targetSquare.classList.add('attacked');
+    }
+  }
 };
 
 export {
