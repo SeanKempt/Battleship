@@ -1,6 +1,8 @@
 import './style.css';
 import './scss/styles.scss';
-import 'bootstrap';
+import * as bootstrap from 'bootstrap';
 import { renderWelcomeModal } from './modules/domChanges';
+
+window.bootstrap = bootstrap;
 
 renderWelcomeModal();

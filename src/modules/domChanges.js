@@ -211,15 +211,16 @@ const sunkShipAlert = (element, player, shipName) => {
   const alertDiv = document.createElement('div');
   const alertCloseBtn = document.createElement('button');
   const boardWrapper = document.querySelector('#board-wrapper');
+  alertDiv.setAttribute('id', 'sunkalert');
   alertCloseBtn.classList.add('btn-close');
   alertCloseBtn.setAttribute('data-bs-dismiss', 'alert');
+  alertCloseBtn.setAttribute('role', 'alert');
   alertDiv.classList.add(
     'alert',
     'alert-danger',
     'alert-dismissible',
     'fade',
     'show',
-    'role="alert"',
     'position-absolute',
     'w-100'
   );
@@ -262,6 +263,7 @@ const attackEventListener = (
         randomAttack.x,
         randomAttack.y
       );
+      dimissAlert();
       _domAttackLogic(
         playerObj,
         enemyObj,
@@ -374,6 +376,15 @@ const playAgainBtnEvent = (element) => {
     resetGame();
   });
   return element;
+};
+
+const dimissAlert = () => {
+  const alertCloseBtn = document.querySelector('.btn-close');
+  if (alertCloseBtn) {
+    setTimeout(() => {
+      alertCloseBtn.click();
+    }, '3000');
+  }
 };
 
 const renderGameOverModal = (winnerName) => {
