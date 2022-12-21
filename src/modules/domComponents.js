@@ -7,6 +7,12 @@ const createWelcomeModal = () => {
   const modalFooter = document.createElement('div');
   const modalContinueBtn = document.createElement('button');
   const modalTitle = document.createElement('h1');
+  const modalNameEntry = document.createElement('input');
+  const modalNameEntryLabel = document.createElement('label');
+  modalNameEntryLabel.setAttribute('for', 'playernameentry');
+  modalNameEntry.setAttribute('type', 'text');
+  modalNameEntry.setAttribute('id', 'playernameentry');
+  modalNameEntry.setAttribute('name', 'playernameentry');
   modalContinueBtn.setAttribute('type', 'button');
   modalContinueBtn.setAttribute('id', 'startBtn');
   modalOuterWrapper.classList.add('modal');
@@ -31,7 +37,10 @@ const createWelcomeModal = () => {
   modalContent.appendChild(modalFooter);
   modalFooter.appendChild(modalContinueBtn);
   modalTitle.textContent = `Welcome to Battleships!`;
-  modalBody.textContent = `Here are the rules!`;
+  modalBody.innerHTML = `<p>Read the rules here: <a target='_blank' href="https://en.wikipedia.org/wiki/Battleship_(game)#Description">Game rules</a></p>`;
+  modalBody.appendChild(modalNameEntryLabel);
+  modalBody.appendChild(modalNameEntry);
+  modalNameEntryLabel.textContent = `Player Name:`;
   modalContinueBtn.textContent = 'Start Game';
   return modalOuterWrapper;
 };

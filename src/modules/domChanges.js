@@ -336,14 +336,15 @@ const removeFlyout = () => {
 
 const startBtnEvent = (element) => {
   element.addEventListener('click', () => {
+    const playerName = document.querySelector('#playernameentry').value;
     const playerBoard = GameBoard('playerBoard');
-    const playerOne = Player('Player', true);
+    const playerOne = Player(playerName, true);
 
     const computerBoard = GameBoard('computerBoard');
     const cpu = Player('computer', false, true);
 
     // render the squares on the UI
-    renderPlayerGameBoard(playerBoard, 'Player');
+    renderPlayerGameBoard(playerBoard, playerName);
     renderComputerGameBoard(computerBoard, playerOne, cpu, playerBoard);
     computerBoard.generateComputerShipPlacement();
 
