@@ -13,6 +13,7 @@ const createWelcomeModal = () => {
   modalNameEntry.setAttribute('type', 'text');
   modalNameEntry.setAttribute('id', 'playernameentry');
   modalNameEntry.setAttribute('name', 'playernameentry');
+  modalNameEntry.setAttribute('value', 'Player');
   modalContinueBtn.setAttribute('type', 'button');
   modalContinueBtn.setAttribute('id', 'startBtn');
   modalOuterWrapper.classList.add('modal');
@@ -50,6 +51,7 @@ const createShipFlyout = () => {
   const flyoutHeader = document.createElement('div');
   const flyoutBody = document.createElement('div');
   const flyoutTitle = document.createElement('h5');
+  const horizontalRule = document.createElement('hr');
   flyoutContainer.setAttribute('id', '#shipflyout');
   flyoutContainer.classList.add('offcanvas', 'show', 'offcanvas-end');
   flyoutContainer.setAttribute('data-bs-scroll', 'true');
@@ -60,6 +62,8 @@ const createShipFlyout = () => {
   flyoutContainer.appendChild(flyoutHeader);
   flyoutContainer.appendChild(flyoutBody);
   flyoutHeader.appendChild(flyoutTitle);
+  flyoutBody.textContent = `Double click ships to rotate`;
+  flyoutBody.appendChild(horizontalRule);
   flyoutTitle.textContent = `Ships to be Placed`;
   flyoutContainer.style.display = 'block';
   return flyoutContainer;

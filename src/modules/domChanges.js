@@ -14,6 +14,7 @@ const dragStarter = (e) => {
     event.dataTransfer.setData('text/plain', [
       event.target.dataset.id,
       event.target.dataset.shiplength,
+      event.target.dataset.shipdirection,
     ]);
     // const shipFlyout = document.querySelector('.offcanvas');
   });
@@ -95,7 +96,7 @@ const dropEvent = (e, board) => {
   let cords = cell.getAttribute('data-cord');
   cords = cordsToNum(cords);
   cords = coordinateCorrection(cords);
-  const placedShip = board.placeShip(`${name}`, [cords], shipLength);
+  const placedShip = board.placeShip(`${name}`, [cords], shipLength, data[2]);
 
   const isSquareTaken = () => {
     let result;
@@ -129,8 +130,10 @@ const shipFactory = (name, length) => {
   });
   ship.domEl.dataset.id = name;
   ship.domEl.dataset.shiplength = length;
+  ship.domEl.dataset.shipdirection = 'horizontal';
   ship.domEl.setAttribute('draggable', true);
   ship.domEl.classList.add('ship');
+  ship.domEl.classList.add(`${name}`);
   dragStarter(ship.domEl);
   addShipIndex(ship.domEl);
   for (let i = 0; i < length; i += 1) {
@@ -139,6 +142,16 @@ const shipFactory = (name, length) => {
     cell.dataset.index = [i];
     ship.domEl.appendChild(cell);
   }
+  // allow user to double click on the ship element to rotate it for placement
+  ship.domEl.addEventListener('dblclick', () => {
+    if (ship.domEl.dataset.shipdirection === 'horizontal') {
+      ship.domEl.dataset.shipdirection = 'vertical';
+      ship.domEl.style.flexDirection = 'column';
+    } else if (ship.domEl.dataset.shipdirection === 'vertical') {
+      ship.domEl.dataset.shipdirection = 'horizontal';
+      ship.domEl.style.flexDirection = 'row';
+    }
+  });
   return ship.domEl;
 };
 
@@ -154,14 +167,19 @@ const renderDraggableShips = () => {
   const fleetContainer = document.createElement('div');
   fleetContainer.setAttribute('id', 'fleetcontainer');
   const carrierTitle = document.createElement('p');
+  carrierTitle.classList.add('shipTitle');
   carrierTitle.setAttribute('id', 'carrier');
   const battleshipTitle = document.createElement('p');
+  battleshipTitle.classList.add('shipTitle');
   battleshipTitle.setAttribute('id', 'battleship');
   const destroyerTitle = document.createElement('p');
+  destroyerTitle.classList.add('shipTitle');
   destroyerTitle.setAttribute('id', 'destroyer');
   const submarineTitle = document.createElement('p');
+  submarineTitle.classList.add('shipTitle');
   submarineTitle.setAttribute('id', 'submarine');
   const patrolBoatTitle = document.createElement('p');
+  patrolBoatTitle.classList.add('shipTitle');
   patrolBoatTitle.setAttribute('id', 'patrolboat');
   carrierTitle.textContent = 'Carrier';
   battleshipTitle.textContent = 'Battleship';
